@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navid Istanbullu - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(100, 255, 218, 0.3);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 15, 35, 0.9);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(15, 15, 35, 0.95);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #64ffda, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #64ffda;
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(45deg, #64ffda, #00d4ff);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile menu */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu-btn span {
+            width: 25px;
+            height: 3px;
+            background: #64ffda;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-btn.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 2rem 0;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            background: linear-gradient(45deg, #64ffda, #00d4ff);
+            padding: 4px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #2a2a4a;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #64ffda);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            color: #a8a8b3;
+            margin-bottom: 2rem;
+        }
+
+        .hero .description {
+            font-size: 1.1rem;
+            color: #c4c4cc;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            background: rgba(100, 255, 218, 0.1);
+            border: 2px solid rgba(100, 255, 218, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64ffda;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .social-link img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: rgba(100, 255, 218, 0.2);
+            border-color: #64ffda;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(100, 255, 218, 0.3);
+        }
+
+        /* Sections */
+        section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, #ffffff, #64ffda);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #c4c4cc;
+        }
+
+        .hobbies {
+            margin-top: 2rem;
+        }
+
+        .hobbies h3 {
+            color: #64ffda;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .hobby-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .hobby-tag {
+            background: rgba(100, 255, 218, 0.1);
+            color: #64ffda;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .hobby-tag:hover {
+            background: rgba(100, 255, 218, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-15px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-card h3 {
+            color: #64ffda;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .project-card p {
+            color: #c4c4cc;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-tag {
+            background: rgba(0, 212, 255, 0.1);
+            color: #00d4ff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-link {
+            padding: 0.5rem 1rem;
+            background: linear-gradient(45deg, #64ffda, #00d4ff);
+            color: #0f0f23;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(100, 255, 218, 0.3);
+        }
+
+        /* CV Download Button */
+        .cv-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #64ffda, #00d4ff);
+            color: #0f0f23;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .cv-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(100, 255, 218, 0.4);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 100%;
+                height: 100vh;
+                background: rgba(15, 15, 35, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 3rem;
+                transition: right 0.3s ease;
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+                z-index: 1001;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            section {
+                padding: 4rem 1rem;
+            }
+
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .social-links {
+                gap: 1rem;
+            }
+
+            .project-links {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 100px 1rem 4rem;
+            }
+
+            .profile-image {
+                width: 150px;
+                height: 150px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .social-link {
+                width: 45px;
+                height: 45px;
+            }
+        }
+
+        /* Soccer Gallery Section */
+        .soccer-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .soccer-item {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .soccer-item:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .soccer-video {
+            width: 100%;
+            height: 200px;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .soccer-image {
+            width: 100%;
+            height: 200px;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #2a2a4a, #1a1a3a);
+        }
+
+        .soccer-item h3 {
+            color: #64ffda;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .soccer-item p {
+            color: #c4c4cc;
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+
+        .soccer-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(100, 255, 218, 0.1);
+            border: 1px solid rgba(100, 255, 218, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: rgba(100, 255, 218, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #64ffda;
+            display: block;
+        }
+
+        .stat-label {
+            color: #a8a8b3;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Toast notification for email copy */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #64ffda, #00d4ff);
+            color: #0f0f23;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 10000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">Navid Istanbullu</div>
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#soccer">Soccer</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Invisible spacer to prevent content overlap with fixed nav -->
+    <div class="nav-spacer"></div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="profile-image">
+                <img src="media/profile-photo.jpg" alt="Navid Istanbullu Profile Picture">
+            </div>
+            <h1>Navid Istanbullu</h1>
+            <p class="subtitle">Consultant, Analysis and Experimentation</p>
+            <p class="description">
+                German international student turned data scientist. Former college soccer captain and All-American who transitioned from the pitch to the world of data analytics. Currently pursuing a Master's in Computer Science while helping Fortune 500 clients drive data-informed decisions.
+            </p>
+            <a href="https://drive.google.com/file/d/18iaclfTuwKiYk3J9FXqbRDfQ9HoOliNo/view?usp=drive_link" class="cv-button" target="_blank">Download CV</a>
+            <div class="social-links">
+                <a href="#" class="social-link" id="emailCopy" title="Copy Email">
+                    <img src="media/email-logo.jpg" alt="Email">
+                </a>
+                <a href="https://linkedin.com/in/nistanbullu/" class="social-link" title="LinkedIn" target="_blank">
+                    <img src="media/linkedin-logo.jpg" alt="LinkedIn">
+                </a>
+                <a href="https://github.com/navido97" class="social-link" title="GitHub" target="_blank">
+                    <img src="media/github-logo.jpg" alt="GitHub">
+                </a>
+                <a href="https://instagram.com/navid_ist" class="social-link" title="Instagram" target="_blank">
+                    <img src="media/instagram-logo.jpg" alt="Instagram"> 
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-grid">
+            <div class="glass-card">
+                <h3 style="color: #64ffda; margin-bottom: 1rem;">My Journey</h3>
+                <p class="about-text">
+                    Hey there! I'm Navid, a German international student who moved to the US in 2017 with a soccer ball and big dreams. 
+                    I had an incredible journey as a college soccer player, eventually becoming team captain and earning All-American honors. 
+                    The highlight was playing in a national final before hanging up my boots to pursue coaching at both college and club levels.
+                </p>
+                <p class="about-text">
+                    After completing my undergraduate and master's degrees in business finance, I discovered my passion for data science. 
+                    I spent two years as a Data Analyst Consultant working with Fortune 500 clients in the financial sector, 
+                    specializing in A/B testing, experimentation, and data-driven decision making. Currently, I'm pursuing another master's in Computer Science to deepen my technical expertise.
+                </p>
+                <div class="hobbies">
+                    <h3>Life Beyond Data</h3>
+                    <div class="hobby-tags">
+                        <span class="hobby-tag">⚽ Playing Soccer</span>
+                        <span class="hobby-tag">🏃‍♂️ Coaching Soccer</span>
+                        <span class="hobby-tag">💪 Weightlifting</span>
+                        <span class="hobby-tag">📈 Personal Optimization</span>
+                        <span class="hobby-tag">📚 Continuous Learning</span>
+                        <span class="hobby-tag">🎯 Goal Setting</span>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card">
+                <h3 style="color: #64ffda; margin-bottom: 1rem;">Technical Arsenal</h3>
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: #00d4ff; margin-bottom: 0.5rem;">Analytics & Data Science</h4>
+                    <div class="hobby-tags">
+                        <span class="hobby-tag">Python</span>
+                        <span class="hobby-tag">SQL</span>
+                        <span class="hobby-tag">Adobe Analytics</span>
+                        <span class="hobby-tag">Google Analytics</span>
+                        <span class="hobby-tag">A/B Testing</span>
+                    </div>
+                </div>
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: #00d4ff; margin-bottom: 0.5rem;">Visualization & BI</h4>
+                    <div class="hobby-tags">
+                        <span class="hobby-tag">Tableau</span>
+                        <span class="hobby-tag">Qlik</span>
+                        <span class="hobby-tag">Streamlit</span>
+                        <span class="hobby-tag">Data Visualization</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="color: #00d4ff; margin-bottom: 0.5rem;">Cloud & Data Engineering</h4>
+                    <div class="hobby-tags">
+                        <span class="hobby-tag">Databricks</span>
+                        <span class="hobby-tag">Amazon Redshift</span>
+                        <span class="hobby-tag">Google BigQuery</span>
+                        <span class="hobby-tag">Snowflake</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2 class="section-title">Featured Projects</h2>
+        
+        <!-- Personal Portfolio Highlight -->
+        <div style="margin-bottom: 3rem;">
+            <h3 style="color: #64ffda; text-align: center; margin-bottom: 2rem; font-size: 1.8rem;">Personal Portfolio</h3>
+            <div class="glass-card" style="border: 2px solid rgba(100, 255, 218, 0.3);">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
+                    <div>
+                        <h3 style="color: #64ffda; margin-bottom: 1rem; font-size: 1.6rem;">⚽ Odds Maker - Soccer Betting Platform</h3>
+                        <p style="color: #c4c4cc; margin-bottom: 1.5rem; line-height: 1.7;">
+                            A comprehensive web application that aggregates and compares soccer betting odds from major sportsbooks worldwide. 
+                            Users can find the best odds for any match, track value opportunities, and make informed betting decisions 
+                            across multiple tournaments including World Cup, Premier League, and Champions League.
+                        </p>
+                        <div class="tech-stack" style="margin-bottom: 1.5rem;">
+                            <span class="tech-tag">React</span>
+                            <span class="tech-tag">Node.js</span>
+                            <span class="tech-tag">Web Scraping</span>
+                            <span class="tech-tag">API Integration</span>
+                            <span class="tech-tag">Real-time Data</span>
+                            <span class="tech-tag">Responsive Design</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/soccer-analytics-HB-NI/sports_betting" class="project-link" target="_blank">GitHub Repository</a>
+                            <a href="https://oddsmaker.us/" class="project-link" target="_blank">Live Demo</a>
+                        </div>
+                    </div>
+                    <div>
+                        <img src="media/odds-maker-screenshot.jpg" alt="Odds Maker Dashboard" style="width: 100%; border-radius: 15px; object-fit: cover;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Professional Work -->
+        <h3 style="color: #00d4ff; text-align: center; margin-bottom: 2rem; font-size: 1.8rem;">Professional Experience</h3>
+        <div class="projects-grid">
+            <div class="project-card">
+                <h3>Financial A/B Testing Platform</h3>
+                <p>Designed and implemented comprehensive A/B testing framework for Fortune 500 financial client, enabling data-driven decision making through statistical analysis and audience sizing.</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">SQL</span>
+                    <span class="tech-tag">Statistical Analysis</span>
+                    <span class="tech-tag">Adobe Analytics</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3>AI Knowledge Search Assistant</h3>
+                <p>Built scalable AI search assistant using Streamlit and Snowflake for internal knowledge bases, contributing to an internal initiative and serving as a pre-sales innovation demonstrator.</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">Streamlit</span>
+                    <span class="tech-tag">Snowflake</span>
+                    <span class="tech-tag">AI/ML</span>
+                    <span class="tech-tag">Python</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3>Interactive Data Dashboards</h3>
+                <p>Designed and maintained Tableau and Qlik dashboards aligned with customer needs, improving data visualization and enabling better business insights for financial sector clients.</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">Tableau</span>
+                    <span class="tech-tag">Qlik</span>
+                    <span class="tech-tag">Data Visualization</span>
+                    <span class="tech-tag">Business Intelligence</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3>Clickstream Analytics Engine</h3>
+                <p>Performed advanced exploratory data analysis using Python notebooks and SQL databases, leveraging clickstream data to identify trends, detect anomalies, and guide hypothesis formulation.</p>
+                <div class="tech-stack">
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">SQL</span>
+                    <span class="tech-tag">Google BigQuery</span>
+                    <span class="tech-tag">Data Engineering</span>
+                </div>
+            </div>
+        </div>
+    </section>
+ 
+
+        <!-- Soccer Section -->
+        <section id="soccer">
+            <h2 class="section-title">Soccer Passion</h2>
+            
+    
+    
+            <!-- Soccer Gallery -->
+            <div class="soccer-gallery">
+                <div class="soccer-item">
+                    <video class="soccer-video" controls poster="media/SC1.jpg">
+                        <source src="media/first_touch_test.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <h3>Skills Showcase</h3>
+                    <p> Come up with text here.</p>
+                </div>
+    
+                <div class="soccer-item">
+                    <img class="soccer-image" src="media/SC3.jpg" alt="Navid coaching soccer">
+                    <h3>Coaching in Action</h3>
+                    <p>Leading training sessions and developing young talent at both college and club levels, sharing the knowledge gained from my playing career.</p>
+                </div>
+    
+                <div class="soccer-item">
+                    <img class="soccer-image" src="media/SC4.jpg" alt="Navid playing soccer">
+                    <h3>Game Day</h3>
+                    <p>Competing at the highest collegiate level, where leadership and teamwork skills were just as important as technical ability.</p>
+                </div>
+    
+                <div class="soccer-item">
+                    <img class="soccer-image" src="media/SC2.jpg" alt="Navid with team">
+                    <h3>Building Champions</h3>
+                    <p>Working with players to develop not just their soccer skills, but also the discipline and analytical thinking that translates to success in any field.</p>
+                </div>
+    
+                <div class="soccer-item">
+                    <img class="soccer-image" src="media/SC5.jpg" alt="Navid playing soccer">
+                    <h3>Space Holder</h3>
+                    <p>Come up with text here.</p>
+                </div>
+    
+                <div class="soccer-item">
+                    <img class="soccer-image" src="media/SC6.jpg" alt="Navid playing soccer">
+                    <h3>Space Holder</h3>
+                    <p>Come up with text here.</p>
+                </div>
+            </div>
+        </section>
+
+     <!-- Contact Section -->
+     <section id="contact">
+        <h2 class="section-title">Let's Connect</h2>
+        <div class="glass-card" style="text-align: center; max-width: 600px; margin: 0 auto;">
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; color: #c4c4cc;">
+                I'm always open to discussing new opportunities, interesting projects, or just having a chat about technology.
+            </p>
+            <div class="social-links">
+                <a href="#" class="social-link" id="emailCopyContact" title="Copy Email">
+                    <img src="media/email-logo.jpg" alt="Email">
+                </a>
+                <a href="https://linkedin.com/in/nistanbullu/" class="social-link" title="LinkedIn" target="_blank">
+                    <img src="media/linkedin-logo.jpg" alt="LinkedIn">
+                </a>
+                <a href="https://github.com/navido97" class="social-link" title="GitHub" target="_blank">
+                    <img src="media/github-logo.jpg" alt="GitHub">
+                </a>
+                <a href="https://instagram.com/navid_ist" class="social-link" title="Instagram" target="_blank">
+                    <img src="media/instagram-logo.jpg" alt="Instagram">
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Create animated background particles
+        function createParticles() {
+            const bgAnimation = document.getElementById('bgAnimation');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                bgAnimation.appendChild(particle);
+            }
+        }
+
+        // Mobile menu functionality
+        function initMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const navLinks = document.getElementById('navLinks');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenuBtn.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+
+            // Close menu when clicking on a link
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenuBtn.classList.remove('active');
+                    navLinks.classList.remove('active');
+                });
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenuBtn.contains(e.target) && !navLinks.contains(e.target)) {
+                    mobileMenuBtn.classList.remove('active');
+                    navLinks.classList.remove('active');
+                }
+            });
+        }
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 80; // Account for fixed navbar
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Initialize everything when page loads
+        window.addEventListener('load', () => {
+            createParticles();
+            initMobileMenu();
+            initEmailCopy();
+        });
+
+        // Email copy functionality
+        function initEmailCopy() {
+            const email = 'navido972@gmail.com';
+            const emailButtons = document.querySelectorAll('#emailCopy, #emailCopyContact');
+            
+            emailButtons.forEach(button => {
+                button.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    
+                    try {
+                        await navigator.clipboard.writeText(email);
+                        showToast('Email copied to clipboard!');
+                    } catch (err) {
+                        // Fallback for older browsers
+                        const textArea = document.createElement('textarea');
+                        textArea.value = email;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        showToast('Email copied to clipboard!');
+                    }
+                });
+            });
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            // Remove existing toast if any
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            // Create new toast
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            // Show toast
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+
+            // Hide and remove toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.parentNode.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Add hover effects to project cards
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-15px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
