@@ -394,20 +394,15 @@
             box-shadow: 0 10px 20px rgba(100, 255, 218, 0.3);
         }
 
-        /* CV Download Button */
-        .cv-button {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: linear-gradient(45deg, #64ffda, #00d4ff);
-            color: #0f0f23;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 600;
+        /* CV Download Buttons */
+        .cv-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
             margin-top: 1rem;
-            transition: all 0.3s ease;
         }
 
-        /* CV Download Button */
         .cv-button {
             display: inline-block;
             padding: 1rem 2rem;
@@ -416,13 +411,21 @@
             text-decoration: none;
             border-radius: 10px;
             font-weight: 600;
-            margin-top: 1rem;
             transition: all 0.3s ease;
+            white-space: nowrap;
         }
 
         .cv-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 30px rgba(100, 255, 218, 0.4);
+        }
+
+        .cv-button-german {
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+        }
+
+        .cv-button-german:hover {
+            box-shadow: 0 15px 30px rgba(255, 107, 107, 0.4);
         }
 
         /* Animations */
