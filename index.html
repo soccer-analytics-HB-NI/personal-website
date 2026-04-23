@@ -1,1140 +1,1523 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Navid Istanbullu - Portfolio</title>
+    <title>Navid Istanbullu – Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg-deep:     #07090f;
+            --bg-mid:      #0d1117;
+            --bg-card:     rgba(255,255,255,0.035);
+            --bg-card-h:   rgba(255,255,255,0.065);
+            --border:      rgba(255,255,255,0.08);
+            --border-acc:  rgba(180,230,210,0.25);
+            --gold:        #c8a96e;
+            --gold-light:  #e8c98e;
+            --teal:        #5ccfb0;
+            --teal-dim:    #3a9980;
+            --text-bright: #f0ede8;
+            --text-main:   #b8b4ad;
+            --text-muted:  #72706b;
+            --accent-red:  #d4735a;
+            --font-display: 'DM Serif Display', Georgia, serif;
+            --font-body:    'DM Sans', system-ui, sans-serif;
+            --max-w: 1160px;
+            --radius: 18px;
         }
 
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            line-height: 1.6;
-            color: #ffffff;
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
-            min-height: 100vh;
+            font-family: var(--font-body);
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-main);
+            background: var(--bg-deep);
             overflow-x: hidden;
         }
 
-        /* Animated background particles */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
+        /* ───── NOISE TEXTURE OVERLAY ───── */
+        body::before {
+            content: '';
+            position: fixed; inset: 0; z-index: 0;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            background-size: 200px 200px;
+            opacity: 0.45;
+        }
+
+        /* ───── AMBIENT GLOW BLOBS ───── */
+        .ambient {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
             overflow: hidden;
         }
-
-        .particle {
+        .ambient-blob {
             position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(100, 255, 218, 0.3);
             border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
+            filter: blur(120px);
+            opacity: 0.12;
         }
+        .blob-1 { width: 600px; height: 600px; background: var(--teal);    top: -200px; left: -200px; }
+        .blob-2 { width: 500px; height: 500px; background: var(--gold);     bottom: 10%; right: -150px; }
+        .blob-3 { width: 400px; height: 400px; background: var(--teal-dim); top: 50%;   left: 40%; opacity: 0.07; }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
-            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
-        }
-
-        /* Navigation */
+        /* ───── NAVIGATION ───── */
         nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(15, 15, 35, 0.9);
-            backdrop-filter: blur(20px);
-            z-index: 1000;
-            padding: 1rem 0;
-            transition: all 0.3s ease;
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 2.5rem;
+            height: 68px;
+            background: rgba(7, 9, 15, 0.75);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
+            transition: background 0.3s;
         }
+        nav.scrolled { background: rgba(7, 9, 15, 0.95); }
 
-        nav.scrolled {
-            background: rgba(15, 15, 35, 0.95);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            color: var(--text-bright);
+            letter-spacing: 0.02em;
         }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: linear-gradient(45deg, #64ffda, #00d4ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
+        .nav-logo span { color: var(--gold); }
 
         .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
+            display: flex; list-style: none; gap: 2.5rem;
         }
-
         .nav-links a {
-            color: #ffffff;
+            color: var(--text-muted);
             text-decoration: none;
+            font-size: 0.85rem;
             font-weight: 500;
-            transition: all 0.3s ease;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: color 0.2s;
             position: relative;
         }
-
-        .nav-links a:hover {
-            color: #64ffda;
-            transform: translateY(-2px);
-        }
-
         .nav-links a::after {
             content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(45deg, #64ffda, #00d4ff);
+            position: absolute; bottom: -4px; left: 0;
+            width: 0; height: 1px;
+            background: var(--gold);
             transition: width 0.3s ease;
         }
+        .nav-links a:hover { color: var(--gold); }
+        .nav-links a:hover::after { width: 100%; }
 
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Mobile menu */
         .mobile-menu-btn {
             display: none;
             flex-direction: column;
+            gap: 5px;
             cursor: pointer;
             padding: 0.5rem;
+            z-index: 110;
         }
-
         .mobile-menu-btn span {
-            width: 25px;
-            height: 3px;
-            background: #64ffda;
-            margin: 3px 0;
-            transition: 0.3s;
+            display: block; width: 24px; height: 2px;
+            background: var(--text-bright);
+            transition: all 0.3s;
             border-radius: 2px;
         }
+        .mobile-menu-btn.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .mobile-menu-btn.active span:nth-child(2) { opacity: 0; }
+        .mobile-menu-btn.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
-        .mobile-menu-btn.active span:nth-child(1) {
-            transform: rotate(-45deg) translate(-5px, 6px);
-        }
-
-        .mobile-menu-btn.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .mobile-menu-btn.active span:nth-child(3) {
-            transform: rotate(45deg) translate(-5px, -6px);
-        }
-
-        /* Hero Section */
+        /* ───── HERO ───── */
         .hero {
+            position: relative; z-index: 1;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
+            padding: 120px 2rem 80px;
             text-align: center;
-            padding: 120px 2rem 0;
-            position: relative;
         }
 
-        .hero-content {
-            max-width: 800px;
-            animation: fadeInUp 1s ease-out;
+        .hero-inner { max-width: 760px; }
+
+        .hero-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--gold);
+            border: 1px solid rgba(200, 169, 110, 0.3);
+            padding: 0.35rem 1rem;
+            border-radius: 50px;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.2s forwards;
         }
 
-        .profile-image {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
+        .profile-ring {
+            width: 168px; height: 168px;
             margin: 0 auto 2rem;
-            background: linear-gradient(45deg, #64ffda, #00d4ff);
-            padding: 4px;
-            animation: pulse 2s ease-in-out infinite;
+            position: relative;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.1s forwards;
         }
-
-        .profile-image img {
-            width: 100%;
-            height: 100%;
+        .profile-ring::before {
+            content: '';
+            position: absolute; inset: -4px;
+            border-radius: 50%;
+            background: conic-gradient(var(--gold), var(--teal), var(--gold));
+            animation: spinRing 8s linear infinite;
+        }
+        .profile-ring::after {
+            content: '';
+            position: absolute; inset: -4px;
+            border-radius: 50%;
+            background: conic-gradient(var(--gold), var(--teal), var(--gold));
+            filter: blur(12px);
+            opacity: 0.4;
+            animation: spinRing 8s linear infinite;
+        }
+        @keyframes spinRing { to { transform: rotate(360deg); } }
+        .profile-ring img {
+            position: relative; z-index: 1;
+            width: 100%; height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            background: #2a2a4a;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            background: var(--bg-mid);
+            border: 4px solid var(--bg-deep);
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #ffffff, #64ffda);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-weight: 400;
+            color: var(--text-bright);
+            line-height: 1.1;
+            margin-bottom: 0.6rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.3s forwards;
+        }
+        .hero h1 em {
+            font-style: italic;
+            color: var(--gold);
         }
 
-        .hero .subtitle {
-            font-size: 1.5rem;
-            color: #a8a8b3;
-            margin-bottom: 2rem;
+        .hero-role {
+            font-size: 1.05rem;
+            color: var(--teal);
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.4s forwards;
         }
 
-        .hero .description {
-            font-size: 1.1rem;
-            color: #c4c4cc;
-            margin-bottom: 3rem;
+        .hero-desc {
+            font-size: 1rem;
+            color: var(--text-main);
             line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.5s forwards;
         }
 
-        /* Social Links */
-        .social-links {
-            display: flex;
+        .hero-cta-group {
+            display: flex; flex-wrap: wrap; gap: 2.5rem;
             justify-content: center;
-            gap: 1.5rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
+            align-items: baseline;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.6s forwards;
         }
 
-        .social-link {
-            width: 50px;
-            height: 50px;
-            background: rgba(100, 255, 218, 0.1);
-            border: 2px solid rgba(100, 255, 218, 0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #64ffda;
+        /* ───── ELEGANT TEXT CTA BUTTONS ───── */
+        .btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0;
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            font-style: italic;
+            font-weight: 400;
             text-decoration: none;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            letter-spacing: 0.03em;
+            color: var(--gold);
+            position: relative;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            /* underline */
+            border-bottom: 1px solid rgba(200,169,110,0.45);
+            padding-bottom: 3px;
+            transition: color 0.3s ease;
+            overflow: hidden;
+        }
+        /* shimmer line that sweeps left→right on hover */
+        .btn::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: -100%;
+            width: 100%; height: 1px;
+            background: linear-gradient(90deg, transparent 0%, var(--gold-light) 50%, transparent 100%);
+            transition: left 0.45s ease;
+        }
+        .btn:hover::after { left: 100%; }
+        .btn:hover { color: var(--gold-light); }
+
+        /* Variant: teal for secondary */
+        .btn-outline {
+            color: var(--text-bright);
+            border-bottom-color: rgba(255,255,255,0.25);
+        }
+        .btn-outline::after {
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%);
+        }
+        .btn-outline:hover { color: var(--teal); }
+
+        /* Variant: accent red */
+        .btn-red {
+            color: var(--accent-red);
+            border-bottom-color: rgba(212,115,90,0.4);
+        }
+        .btn-red::after {
+            background: linear-gradient(90deg, transparent 0%, #e08570 50%, transparent 100%);
+        }
+        .btn-red:hover { color: #e08570; }
+
+        /* Keep solid buttons for non-hero contexts (contact section etc) */
+        .btn-solid {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-family: var(--font-body);
+            font-size: 0.88rem;
+            font-style: normal;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+        .btn-solid-gold { background: var(--gold); color: #0d0a06; }
+        .btn-solid-gold:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(200,169,110,0.35); }
+        .btn-solid-outline { border: 1px solid var(--border-acc); color: var(--text-bright); background: transparent; }
+        .btn-solid-outline:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-2px); }
+
+        .social-row {
+            display: flex; gap: 1rem; justify-content: center;
+            opacity: 0;
+            animation: fadeUp 0.8s 0.7s forwards;
+        }
+        .social-btn {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none;
+            color: var(--text-muted);
+            transition: all 0.25s;
+            overflow: hidden;
+        }
+        .social-btn img { width: 22px; height: 22px; object-fit: contain; border-radius: 3px; }
+        .social-btn:hover {
+            border-color: var(--gold);
+            background: rgba(200,169,110,0.1);
+            transform: translateY(-3px);
         }
 
-        .social-link img {
-            width: 24px;
-            height: 24px;
-            object-fit: contain;
-            transition: all 0.3s ease;
+        .scroll-hint {
+            position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeUp 1s 1.2s forwards;
+        }
+        .scroll-hint::after {
+            content: '';
+            width: 1px; height: 40px;
+            background: linear-gradient(to bottom, var(--text-muted), transparent);
+            animation: scrollLine 1.5s ease-in-out infinite;
+        }
+        @keyframes scrollLine {
+            0%, 100% { transform: scaleY(1); opacity: 1; }
+            50%       { transform: scaleY(0.5); opacity: 0.4; }
         }
 
-        .social-link:hover {
-            background: rgba(100, 255, 218, 0.2);
-            border-color: #64ffda;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(100, 255, 218, 0.3);
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* Sections */
-        section {
-            padding: 6rem 2rem;
-            max-width: 1200px;
+        /* ───── SECTION WRAPPER ───── */
+        .section-wrap {
+            position: relative; z-index: 1;
+            max-width: var(--max-w);
             margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+
+        .section-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.75rem;
         }
 
         .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 3rem;
-            background: linear-gradient(45deg, #ffffff, #64ffda);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            color: var(--text-bright);
+            margin-bottom: 3.5rem;
+            line-height: 1.15;
+        }
+        .section-title em { font-style: italic; color: var(--gold); }
+
+        .divider {
+            width: 48px; height: 2px;
+            background: linear-gradient(to right, var(--gold), transparent);
+            margin: 1rem 0 3.5rem;
         }
 
-        /* Glass Cards */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+        /* ───── GLASS CARD ───── */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             padding: 2rem;
-            margin-bottom: 2rem;
-            transition: all 0.3s ease;
+            transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
         }
-
-        .glass-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        .card:hover {
+            background: var(--bg-card-h);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
         }
+        .card-gold { border-color: rgba(200,169,110,0.25); }
 
-        /* About Section */
+        /* ───── ABOUT ───── */
         .about-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 3rem;
+            gap: 2rem;
+        }
+
+        .card h3 {
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            color: var(--text-bright);
+            margin-bottom: 1rem;
+        }
+        .card p { color: var(--text-main); line-height: 1.8; margin-bottom: 1rem; }
+        .card p:last-child { margin-bottom: 0; }
+
+        .tag-group {
+            display: flex; flex-wrap: wrap; gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        .tag {
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 0.3rem 0.85rem;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            background: rgba(255,255,255,0.04);
+            transition: all 0.2s;
+        }
+        .tag:hover {
+            border-color: var(--teal);
+            color: var(--teal);
+        }
+        .tag-teal { border-color: rgba(92,207,176,0.3); color: var(--teal); background: rgba(92,207,176,0.06); }
+        .tag-gold { border-color: rgba(200,169,110,0.3); color: var(--gold); background: rgba(200,169,110,0.06); }
+
+        .skill-group { margin-bottom: 1.5rem; }
+        .skill-group:last-child { margin-bottom: 0; }
+        .skill-group h4 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 0.6rem;
+        }
+
+        /* ───── EXPERIENCE TIMELINE ───── */
+        .timeline { position: relative; }
+        .timeline::before {
+            content: '';
+            position: absolute; top: 0; bottom: 0; left: 12px;
+            width: 1px;
+            background: linear-gradient(to bottom, var(--gold), var(--teal), transparent);
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 40px 1fr;
+            gap: 0;
+            margin-bottom: 2.5rem;
+        }
+        .timeline-item:last-child { margin-bottom: 0; }
+
+        .timeline-dot {
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            background: var(--bg-deep);
+            border: 2px solid var(--gold);
+            margin-top: 0.3rem;
+            flex-shrink: 0;
+        }
+        .timeline-dot.teal { border-color: var(--teal); }
+
+        .timeline-body {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            transition: background 0.3s, transform 0.3s;
+        }
+        .timeline-body:hover {
+            background: var(--bg-card-h);
+            transform: translateX(4px);
+        }
+
+        .timeline-meta {
+            display: flex; flex-wrap: wrap; gap: 0.5rem;
+            align-items: baseline;
+            margin-bottom: 0.5rem;
+        }
+        .timeline-company {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            color: var(--text-bright);
+        }
+        .timeline-period {
+            font-size: 0.78rem;
+            color: var(--gold);
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            padding: 0.2rem 0.6rem;
+            border: 1px solid rgba(200,169,110,0.3);
+            border-radius: 50px;
+        }
+        .timeline-location {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .timeline-role {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--teal);
+            letter-spacing: 0.04em;
+            margin-bottom: 0.75rem;
+        }
+
+        .timeline-body ul {
+            list-style: none;
+            display: flex; flex-direction: column; gap: 0.4rem;
+        }
+        .timeline-body ul li {
+            color: var(--text-main);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            padding-left: 1.2rem;
+            position: relative;
+        }
+        .timeline-body ul li::before {
+            content: '→';
+            position: absolute; left: 0;
+            color: var(--teal);
+            font-size: 0.75rem;
+            top: 0.05rem;
+        }
+
+        /* ───── PROJECTS ───── */
+        .featured-project {
+            background: var(--bg-card);
+            border: 1px solid var(--border-acc);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+        .featured-project:hover {
+            background: var(--bg-card-h);
+            transform: translateY(-8px);
+            box-shadow: 0 28px 60px rgba(0,0,0,0.4);
+        }
+
+        .featured-project-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
             align-items: center;
         }
 
-        .about-text {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #c4c4cc;
+        .project-num {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            color: rgba(200,169,110,0.15);
+            line-height: 1;
+            margin-bottom: -1rem;
+            font-style: italic;
+        }
+        .project-title {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            color: var(--text-bright);
+            margin-bottom: 0.75rem;
+        }
+        .project-desc { color: var(--text-main); line-height: 1.8; margin-bottom: 1.5rem; }
+
+        .project-img {
+            width: 100%;
+            border-radius: 12px;
+            object-fit: cover;
+            aspect-ratio: 16/10;
+            background: var(--bg-mid);
+            border: 1px solid var(--border);
         }
 
-        .hobbies {
-            margin-top: 2rem;
-        }
+        .project-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
 
-        .hobbies h3 {
-            color: #64ffda;
+        /* Pro work cards */
+        .pro-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+        .pro-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.75rem;
+            transition: all 0.3s;
+        }
+        .pro-card:hover {
+            background: var(--bg-card-h);
+            transform: translateY(-6px);
+            border-color: rgba(92,207,176,0.2);
+        }
+        .pro-card-icon {
+            width: 44px; height: 44px;
+            border-radius: 10px;
+            background: rgba(92,207,176,0.1);
+            border: 1px solid rgba(92,207,176,0.2);
+            display: flex; align-items: center; justify-content: center;
             margin-bottom: 1rem;
             font-size: 1.3rem;
         }
-
-        .hobby-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .hobby-tag {
-            background: rgba(100, 255, 218, 0.1);
-            color: #64ffda;
-            padding: 0.5rem 1rem;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            border: 1px solid rgba(100, 255, 218, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .hobby-tag:hover {
-            background: rgba(100, 255, 218, 0.2);
-            transform: translateY(-2px);
-        }
-
-        /* Projects Section */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .project-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .project-card:hover {
-            transform: translateY(-15px);
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-        }
-
-        .project-card h3 {
-            color: #64ffda;
-            margin-bottom: 1rem;
-            font-size: 1.4rem;
-        }
-
-        .project-card p {
-            color: #c4c4cc;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .tech-tag {
-            background: rgba(0, 212, 255, 0.1);
-            color: #00d4ff;
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            border: 1px solid rgba(0, 212, 255, 0.3);
-        }
-
-        .project-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .project-link {
-            padding: 0.5rem 1rem;
-            background: linear-gradient(45deg, #64ffda, #00d4ff);
-            color: #0f0f23;
-            text-decoration: none;
-            border-radius: 8px;
+        .pro-card h3 {
+            font-size: 1rem;
             font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .project-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(100, 255, 218, 0.3);
-        }
-
-        /* CV Download Buttons */
-        .cv-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 1rem;
-        }
-
-        .cv-button {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: linear-gradient(45deg, #64ffda, #00d4ff);
-            color: #0f0f23;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .cv-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(100, 255, 218, 0.4);
-        }
-
-        .cv-button-german {
-            background: linear-gradient(45deg, #ff6b6b, #ffa500);
-        }
-
-        .cv-button-german:hover {
-            box-shadow: 0 15px 30px rgba(255, 107, 107, 0.4);
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-in {
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .nav-links {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 100%;
-                height: 100vh;
-                background: rgba(15, 15, 35, 0.98);
-                backdrop-filter: blur(20px);
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 3rem;
-                transition: right 0.3s ease;
-                z-index: 999;
-            }
-
-            .nav-links.active {
-                right: 0;
-            }
-
-            .mobile-menu-btn {
-                display: flex;
-                z-index: 1001;
-            }
-            
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .about-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            section {
-                padding: 4rem 1rem;
-            }
-
-            .nav-container {
-                padding: 0 1rem;
-            }
-
-            .social-links {
-                gap: 1rem;
-            }
-
-            .project-links {
-                flex-direction: column;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero {
-                padding: 100px 1rem 4rem;
-            }
-
-            .profile-image {
-                width: 150px;
-                height: 150px;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero .subtitle {
-                font-size: 1.2rem;
-            }
-
-            .social-link {
-                width: 45px;
-                height: 45px;
-            }
-        }
-
-        /* Soccer Gallery Section */
-        .soccer-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .soccer-item {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-            overflow: hidden;
-        }
-
-        .soccer-item:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .soccer-video {
-            width: 100%;
-            height: 200px;
-            border-radius: 15px;
-            object-fit: cover;
-            margin-bottom: 1rem;
-        }
-
-        .soccer-image {
-            width: 100%;
-            height: 200px;
-            border-radius: 15px;
-            object-fit: cover;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #2a2a4a, #1a1a3a);
-        }
-
-        .soccer-item h3 {
-            color: #64ffda;
+            color: var(--text-bright);
             margin-bottom: 0.5rem;
-            font-size: 1.2rem;
         }
+        .pro-card p { font-size: 0.88rem; color: var(--text-main); line-height: 1.7; }
 
-        .soccer-item p {
-            color: #c4c4cc;
-            line-height: 1.6;
-            font-size: 0.9rem;
-        }
-
-        .soccer-stats {
+        /* ───── SOCCER ───── */
+        .soccer-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-            margin-top: 2rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
         }
-
-        .stat-card {
-            background: rgba(100, 255, 218, 0.1);
-            border: 1px solid rgba(100, 255, 218, 0.3);
-            border-radius: 15px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
+        .soccer-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: all 0.3s;
         }
-
-        .stat-card:hover {
-            background: rgba(100, 255, 218, 0.2);
-            transform: translateY(-5px);
+        .soccer-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 50px rgba(0,0,0,0.5);
         }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #64ffda;
+        .soccer-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
             display: block;
         }
-
-        .stat-label {
-            color: #a8a8b3;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
+        .soccer-card-body { padding: 1.25rem; }
+        .soccer-card-body h3 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            color: var(--text-bright);
+            margin-bottom: 0.4rem;
         }
+        .soccer-card-body p { font-size: 0.88rem; color: var(--text-main); line-height: 1.65; }
 
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
+        /* ───── CERTIFICATES ───── */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem;
         }
-        html {
-            scroll-behavior: smooth;
+        .cert-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            transition: all 0.25s;
         }
+        .cert-card:hover {
+            border-color: rgba(200,169,110,0.3);
+            background: var(--bg-card-h);
+        }
+        .cert-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 0.1rem; }
+        .cert-name { font-size: 0.85rem; font-weight: 500; color: var(--text-bright); line-height: 1.4; }
+        .cert-issuer { font-size: 0.75rem; color: var(--gold); margin-top: 0.2rem; }
 
-        /* Toast notification for email copy */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: linear-gradient(45deg, #64ffda, #00d4ff);
-            color: #0f0f23;
-            padding: 1rem 2rem;
+        /* ───── LANGUAGES ───── */
+        .lang-row { display: flex; flex-wrap: wrap; gap: 1rem; }
+        .lang-item {
+            display: flex; align-items: center; gap: 0.75rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             border-radius: 10px;
+            padding: 0.75rem 1.25rem;
+        }
+        .lang-flag { font-size: 1.4rem; }
+        .lang-name { font-size: 0.88rem; font-weight: 600; color: var(--text-bright); }
+        .lang-level { font-size: 0.75rem; color: var(--teal); }
+
+        /* ───── CONTACT ───── */
+        .contact-wrap {
+            max-width: 580px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .contact-wrap p {
+            font-size: 1.05rem;
+            color: var(--text-main);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        /* ───── FOOTER ───── */
+        footer {
+            position: relative; z-index: 1;
+            border-top: 1px solid var(--border);
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        footer span { color: var(--gold); }
+
+        /* ───── TOAST ───── */
+        .toast {
+            position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
+            background: var(--gold);
+            color: #0d0a06;
+            font-size: 0.85rem;
             font-weight: 600;
-            transform: translateY(100px);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
             opacity: 0;
-            transition: all 0.3s ease;
-            z-index: 10000;
+            transform: translateY(16px);
+            transition: all 0.3s;
+            pointer-events: none;
         }
+        .toast.show { opacity: 1; transform: translateY(0); }
 
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
+        /* ───── REVEAL ANIMATIONS ───── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
         }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
 
-        /* Mobile responsive for project containers */
-        @media (max-width: 768px) {
-            .project-container {
-                display: block !important;
-                grid-template-columns: none !important;
+        /* ───── RESPONSIVE ───── */
+        @media (max-width: 900px) {
+            .about-grid { grid-template-columns: 1fr; }
+            .featured-project-inner { grid-template-columns: 1fr; }
+            .soccer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 640px) {
+            .nav-links {
+                position: fixed; inset: 0;
+                flex-direction: column; justify-content: center; align-items: center;
+                gap: 2.5rem;
+                background: rgba(7,9,15,0.98);
+                backdrop-filter: blur(24px);
+                right: -100%; opacity: 0;
+                transition: right 0.3s ease, opacity 0.3s;
             }
-            
-            .project-container > div:last-child {
-                margin-top: 1.5rem;
-            }
+            .nav-links.open { right: 0; opacity: 1; }
+            .nav-links a { font-size: 1.1rem; }
+            .mobile-menu-btn { display: flex; }
+            .hero h1 { font-size: 2.4rem; }
+            .soccer-grid { grid-template-columns: 1fr; }
+            .section-wrap { padding: 4rem 1.25rem; }
+            nav { padding: 0 1.25rem; }
         }
-
     </style>
 </head>
 <body>
-    <!-- Animated Background -->
-    <div class="bg-animation" id="bgAnimation"></div>
+
+    <!-- Ambient background -->
+    <div class="ambient" aria-hidden="true">
+        <div class="ambient-blob blob-1"></div>
+        <div class="ambient-blob blob-2"></div>
+        <div class="ambient-blob blob-3"></div>
+    </div>
 
     <!-- Navigation -->
     <nav id="navbar">
-        <div class="nav-container">
-            <div class="logo">Navid Istanbullu</div>
-            <div class="mobile-menu-btn" id="mobileMenuBtn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#soccer">Soccer</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+        <div class="nav-logo">Navid <span>Istanbullu</span></div>
+        <div class="mobile-menu-btn" id="mobileBtn" aria-label="Menü">
+            <span></span><span></span><span></span>
         </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">Start</a></li>
+            <li><a href="#about">Über mich</a></li>
+            <li><a href="#experience">Erfahrung</a></li>
+            <li><a href="#projects">Projekte</a></li>
+            <li><a href="#soccer">Fußball</a></li>
+            <li><a href="#contact">Kontakt</a></li>
+        </ul>
     </nav>
 
-    <!-- Invisible spacer to prevent content overlap with fixed nav -->
-    <div class="nav-spacer"></div>
-
-<!-- Hero Section -->
-<section id="home" class="hero">
-    <div class="hero-content">
-        <div class="profile-image">
-            <img src="media/profile-photo.jpg" alt="Navid Istanbullu Profile Picture">
-        </div>
-        <h1>Navid Istanbullu</h1>
-        <p class="subtitle">Consultant, Analysis and Experimentation</p>
-        <p class="description"> 
-            German international student turned data scientist. Former college soccer captain and All-American who transitioned from the pitch to the world of data analytics. Currently pursuing a Master's in Computer Science while helping Fortune 500 clients drive data-informed decisions.
-        </p>
-<p class="cv-note" style="font-size: 0.9rem; color: #c4c4cc; margin-bottom: 0.5rem;">
-            CV available upon request
-        </p>
-        <div class="cv-buttons">
-            <a href="https://drive.google.com/file/d/1p0_ATZxKn4JZj1NzVK3i0vcQC78ERxqV/view?usp=drive_link" class="cv-button" target="_blank">Request CV Access (EN)</a>
-            <a href="https://drive.google.com/file/d/1bJPJ-pRMBkIrvq2jJkvXb94wAVd7iVFO/view?usp=drive_link" class="cv-button cv-button-german" target="_blank">Lebenslauf Anfordern (DE)</a>
-        </div>
-        <div class="social-links">
-            <a href="#" class="social-link" id="emailCopy" title="Copy Email">
-                <img src="media/email-logo.jpg" alt="Email">
-            </a>
-            <a href="https://linkedin.com/in/nistanbullu/" class="social-link" title="LinkedIn" target="_blank">
-                <img src="media/linkedin-logo.jpg" alt="LinkedIn">
-            </a>
-            <a href="https://github.com/soccer-analytics-HB-NI" class="social-link" title="GitHub" target="_blank">
-                <img src="media/github-logo.jpg" alt="GitHub">
-            </a>
-            <a href="https://instagram.com/navid_ist" class="social-link" title="Instagram" target="_blank">
-                <img src="media/instagram-logo.jpg" alt="Instagram"> 
-            </a>
-        </div>
-    </div>
-</section>
-
-    <!-- About Section -->
-    <section id="about">
-        <h2 class="section-title">About Me</h2>
-        <div class="about-grid">
-            <div class="glass-card">
-                <h3 style="color: #64ffda; margin-bottom: 1rem;">My Journey</h3>
-                <p class="about-text">
-                    Hey there! I'm Navid, a German international student who moved to the US in 2017 with a soccer ball and big dreams. 
-                    I had an incredible journey as a college soccer player, eventually becoming team captain and earning All-American honors. 
-                    The highlight was playing in a national final before hanging up my boots to pursue coaching at both college and club levels.
-                </p>
-                <p class="about-text">
-                    After completing my undergraduate and master's degrees in business finance, I discovered my passion for data science. 
-                    I spent over two years as a Data Analyst Consultant working with Fortune 500 clients in the financial sector, 
-                    specializing in A/B testing, experimentation, and data-driven decision making. Currently, I'm pursuing another master's in Computer Science to deepen my technical expertise.
-                </p>
-                <div class="hobbies">
-                    <h3>Life Beyond Data</h3>
-                    <div class="hobby-tags">
-                        <span class="hobby-tag">⚽ Playing Soccer</span>
-                        <span class="hobby-tag">🏃‍♂️ Coaching Soccer</span>
-                        <span class="hobby-tag">💪 Weightlifting</span>
-                        <span class="hobby-tag">📈 Personal Optimization</span>
-                        <span class="hobby-tag">📚 Continuous Learning</span>
-                        <span class="hobby-tag">🎯 Goal Setting</span>
-                    </div>
-                </div>
+    <!-- ───── HERO ───── -->
+    <section id="home" class="hero">
+        <div class="hero-inner">
+            <div class="profile-ring">
+                <img src="media/profile-photo.jpg" alt="Navid Istanbullu">
             </div>
-            <div class="glass-card">
-                <h3 style="color: #64ffda; margin-bottom: 1rem;">Technical Arsenal</h3>
-                <div style="margin-bottom: 2rem;">
-                    <h4 style="color: #00d4ff; margin-bottom: 0.5rem;">Analytics & Data Science</h4>
-                    <div class="hobby-tags">
-                        <span class="hobby-tag">Python</span>
-                        <span class="hobby-tag">SQL</span>
-                        <span class="hobby-tag">Adobe Analytics</span>
-                        <span class="hobby-tag">Google Analytics</span>
-                        <span class="hobby-tag">A/B Testing</span>
-                    </div>
-                </div>
-                <div style="margin-bottom: 2rem;">
-                    <h4 style="color: #00d4ff; margin-bottom: 0.5rem;">Visualization & BI</h4>
-                    <div class="hobby-tags">
-                        <span class="hobby-tag">Tableau</span>
-                        <span class="hobby-tag">Qlik</span>
-                        <span class="hobby-tag">Streamlit</span>
-                        <span class="hobby-tag">Data Visualization</span>
-                    </div>
-                </div>
-                <div>
-                    <h4 style="color: #00d4ff; margin-bottom: 0.5rem;">Cloud & Data Engineering</h4>
-                    <div class="hobby-tags">
-                        <span class="hobby-tag">Databricks</span>
-                        <span class="hobby-tag">Amazon Redshift</span>
-                        <span class="hobby-tag">Google BigQuery</span>
-                        <span class="hobby-tag">Snowflake</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects">
-        <h2 class="section-title">Featured Projects</h2>
-        
-<!-- Personal Portfolio Highlight -->
-<div style="margin-bottom: 3rem;">
-    <h3 style="color: #64ffda; text-align: center; margin-bottom: 2rem; font-size: 1.8rem;">Personal Portfolio</h3>
-    
-<!-- Odds Maker -->
-    <div class="glass-card" style="border: 2px solid rgba(100, 255, 218, 0.3);">
-        <div class="project-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
-            <div>
-                <h3 style="color: #64ffda; margin-bottom: 1rem; font-size: 1.6rem;">Odds Maker - Soccer Betting Platform</h3>
-                <p style="color: #c4c4cc; margin-bottom: 1.5rem; line-height: 1.7;">
-                    A comprehensive web application that aggregates and compares soccer betting odds from major sportsbooks worldwide. 
-                    Users can find the best odds for any match, track value opportunities, and make informed betting decisions 
-                    across multiple tournaments including World Cup, Premier League, and Champions League.
-                </p>
-                <div class="tech-stack" style="margin-bottom: 1.5rem;">
-                    <span class="tech-tag">React</span>
-                    <span class="tech-tag">Node.js</span>
-                    <span class="tech-tag">Web Scraping</span>
-                    <span class="tech-tag">API Integration</span>
-                    <span class="tech-tag">Real-time Data</span>
-                    <span class="tech-tag">Responsive Design</span>
-                </div>
-                <div class="project-links">
-                    <a href="https://github.com/soccer-analytics-HB-NI/sports_betting" class="project-link" target="_blank">GitHub Repository</a>
-                    <a href="https://oddsmaker.us/" class="project-link" target="_blank">Live Demo</a>
-                </div>
-            </div>
-            <div>
-                <img src="media/odds-maker-screenshot.jpg" alt="Odds Maker Dashboard" style="width: 100%; border-radius: 15px; object-fit: cover;">
-            </div>
-        </div>
-    </div>
-
-<!-- Receipt Scanner -->
-    <div class="glass-card" style="border: 2px solid rgba(100, 255, 218, 0.3);">
-        <div class="project-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
-            <div>
-                <h3 style="color: #64ffda; margin-bottom: 1rem; font-size: 1.6rem;">AI Receipt Scanner</h3>
-                <p style="color: #c4c4cc; margin-bottom: 1.5rem; line-height: 1.7;">
-                    A comprehensive web application that digitizes and organizes receipts using advanced OCR and AI technology. Users can snap photos of receipts, automatically extract key information with OpenAI integration, and seamlessly export data to Google Sheets for efficient expense tracking and financial management across personal and business use cases.
-                </p>
-                <div class="tech-stack" style="margin-bottom: 1.5rem;">
-                    <span class="tech-tag">OpenAI API</span>
-                    <span class="tech-tag">Google Sheets API</span>
-                    <span class="tech-tag">Tesseract.js</span>
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">OCR Technology</span>
-                </div>
-                <div class="project-links">
-                    <a href="https://github.com/soccer-analytics-HB-NI/receipt-scanner-pwa" class="project-link" target="_blank">GitHub Repository</a>
-                    <a href="https://receipt-scanner-pwa.vercel.app/" class="project-link" target="_blank">Live Demo</a>
-                </div>
-            </div>
-            <div>
-                <img src="media/SC8.jpg" alt="AI Receipt Scanner" style="width: 100%; border-radius: 15px; object-fit: cover;">
-            </div>
-        </div>
-    </div>
-
-<!-- Cache Performance Analysis -->
-    <div class="glass-card" style="border: 2px solid rgba(100, 255, 218, 0.3);">
-        <div class="project-container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
-            <div>
-                <h3 style="color: #64ffda; margin-bottom: 1rem; font-size: 1.6rem;">Cache Performance Analysis</h3>
-                <p style="color: #c4c4cc; margin-bottom: 1.5rem; line-height: 1.7;">
-                    A comprehensive computer architecture project that simulates and analyzes cache performance across multiple configurations and access patterns. The system evaluates L1 cache behavior with 16KB and 32KB configurations, testing mixed, random, and sequential access patterns to optimize memory hierarchy design for high-performance computing applications including video streaming platforms and real-time data processing systems.
-                </p>
-                <div class="tech-stack" style="margin-bottom: 1.5rem;">
-                    <span class="tech-tag">Computer Architecture</span>
-                    <span class="tech-tag">Memory Systems</span>
-                    <span class="tech-tag">Performance Analysis</span>
-                    <span class="tech-tag">CI/CD Pipeline</span>
-                    <span class="tech-tag">GitHub Actions</span>
-                    <span class="tech-tag">Cache Simulation</span>
-                </div>
-                <div class="project-links">
-                    <a href="https://github.com/soccer-analytics-HB-NI/sniper-cache-performance-analysis" class="project-link" target="_blank">GitHub Repository</a>
-                    <a href="https://github.com/soccer-analytics-HB-NI/sniper-cache-performance-analysis/actions/runs/16430040548" class="project-link" target="_blank">View Results</a> 
-                </div>
-            </div>
-            <div>
-                <img src="media/cache_performance_analysis.png" alt="AI Receipt Scanner" style="width: 100%; border-radius: 15px; object-fit: cover;">
-            </div>
-        </div>
-    </div>
-
-
-</div>
-
-        <!-- Professional Work -->
-        <h3 style="color: #00d4ff; text-align: center; margin-bottom: 2rem; font-size: 1.8rem;">Professional Experience</h3>
-        <div class="projects-grid">
-            <div class="project-card">
-                <h3>Financial A/B Testing Platform</h3>
-                <p>Designed and implemented comprehensive A/B testing framework for Fortune 500 financial client, enabling data-driven decision making through statistical analysis and audience sizing.</p>
-                <div class="tech-stack">
-                    <span class="tech-tag">Python</span>
-                    <span class="tech-tag">SQL</span>
-                    <span class="tech-tag">Statistical Analysis</span>
-                    <span class="tech-tag">Adobe Analytics</span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <h3>AI Knowledge Search Assistant</h3>
-                <p>Built scalable AI search assistant using Streamlit and Snowflake for internal knowledge bases, contributing to an internal initiative and serving as a pre-sales innovation demonstrator.</p>
-                <div class="tech-stack">
-                    <span class="tech-tag">Streamlit</span>
-                    <span class="tech-tag">Snowflake</span>
-                    <span class="tech-tag">AI/ML</span>
-                    <span class="tech-tag">Python</span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <h3>Interactive Data Dashboards</h3>
-                <p>Designed and maintained Tableau and Qlik dashboards aligned with customer needs, improving data visualization and enabling better business insights for financial sector clients.</p>
-                <div class="tech-stack">
-                    <span class="tech-tag">Tableau</span>
-                    <span class="tech-tag">Qlik</span>
-                    <span class="tech-tag">Data Visualization</span>
-                    <span class="tech-tag">Business Intelligence</span>
-                </div>
-            </div>
-
-            <div class="project-card">
-                <h3>Clickstream Analytics Engine</h3>
-                <p>Performed advanced exploratory data analysis using Python notebooks and SQL databases, leveraging clickstream data to identify trends, detect anomalies, and guide hypothesis formulation.</p>
-                <div class="tech-stack">
-                    <span class="tech-tag">Python</span>
-                    <span class="tech-tag">SQL</span>
-                    <span class="tech-tag">Google BigQuery</span>
-                    <span class="tech-tag">Data Engineering</span>
-                </div>
-            </div>
-        </div>
-    </section>
- 
-
-        <!-- Soccer Section -->
-        <section id="soccer">
-            <h2 class="section-title">Soccer Passion</h2>
-            
-    
-    
-            <!-- Soccer Gallery -->
-            <div class="soccer-gallery">
-    
-                <div class="soccer-item">
-                    <img class="soccer-image" src="media/SC3.jpg" alt="Navid coaching soccer">
-                    <h3>Coaching in Action</h3>
-                    <p>Leading training sessions and developing young talent at both college and club levels, sharing the knowledge gained from my playing career.</p>
-                </div>
-    
-                <div class="soccer-item">
-                    <img class="soccer-image" src="media/SC4.jpg" alt="Navid playing soccer">
-                    <h3>Game Day</h3>
-                    <p>Competing at the highest collegiate level, where leadership and teamwork skills were just as important as technical ability.</p>
-                </div>
-    
-                <div class="soccer-item">
-                    <img class="soccer-image" src="media/SC2.jpg" alt="Navid with team">
-                    <h3>Building Champions</h3>
-                    <p>Working with players to develop not just their soccer skills, but also the discipline and analytical thinking that translates to success in any field.</p>
-                </div>
-                
-            </div>
-        </section>
-
-     <!-- Contact Section -->
-     <section id="contact">
-        <h2 class="section-title">Let's Connect</h2>
-        <div class="glass-card" style="text-align: center; max-width: 600px; margin: 0 auto;">
-            <p style="font-size: 1.2rem; margin-bottom: 2rem; color: #c4c4cc;">
-                I'm always open to discussing new opportunities, interesting projects, or just having a chat about technology.
+            <div class="hero-label">Business Data Analyst · Bremen, Deutschland</div>
+            <h1>Navid <em>Istanbullu</em></h1>
+            <p class="hero-role">Data Analytics &amp; Decision Science · IT-Consultant &amp; Web Developer</p>
+            <p class="hero-desc">
+                Deutsch-amerikanischer Data Analyst mit Erfahrung in Fortune-500-Projekten, A/B-Testing, KI-Initiativen und Web-Development. 
+                Ehemaliger College-Fußballkapitän, der analytisches Denken vom Spielfeld in die Datenwelt mitgebracht hat.
             </p>
-            <div class="social-links">
-                <a href="#" class="social-link" id="emailCopyContact" title="Copy Email">
-                    <img src="media/email-logo.jpg" alt="Email">
+            <div class="hero-cta-group">
+                <a href="https://drive.google.com/file/d/1p0_ATZxKn4JZj1NzVK3i0vcQC78ERxqV/view?usp=drive_link" class="btn btn-primary" target="_blank">Lebenslauf anfordern (EN)</a>
+                <a href="https://drive.google.com/file/d/1bJPJ-pRMBkIrvq2jJkvXb94wAVd7iVFO/view?usp=drive_link" class="btn btn-red" target="_blank">Lebenslauf anfordern (DE)</a>
+                <a href="#contact" class="btn btn-outline">Kontakt aufnehmen</a>
+            </div>
+            <div class="social-row">
+                <a href="#" class="social-btn" id="emailBtn" title="E-Mail kopieren">
+                    <img src="media/email-logo.jpg" alt="E-Mail">
                 </a>
-                <a href="https://linkedin.com/in/nistanbullu/" class="social-link" title="LinkedIn" target="_blank">
+                <a href="https://linkedin.com/in/nistanbullu/" class="social-btn" title="LinkedIn" target="_blank">
                     <img src="media/linkedin-logo.jpg" alt="LinkedIn">
                 </a>
-                <a href="https://github.com/soccer-analytics-HB-NI" class="social-link" title="GitHub" target="_blank">
+                <a href="https://github.com/soccer-analytics-HB-NI" class="social-btn" title="GitHub" target="_blank">
                     <img src="media/github-logo.jpg" alt="GitHub">
                 </a>
-                <a href="https://instagram.com/navid_ist" class="social-link" title="Instagram" target="_blank">
+                <a href="https://instagram.com/navid_ist" class="social-btn" title="Instagram" target="_blank">
                     <img src="media/instagram-logo.jpg" alt="Instagram">
                 </a>
             </div>
         </div>
+        <div class="scroll-hint">Scrollen</div>
     </section>
 
+    <!-- ───── ABOUT ───── -->
+    <section id="about">
+        <div class="section-wrap">
+            <div class="reveal">
+                <p class="section-label">Über mich</p>
+                <h2 class="section-title">Vom Spielfeld <em>zum Datenpipeline</em></h2>
+                <div class="divider"></div>
+            </div>
+            <div class="about-grid reveal">
+                <div class="card card-gold">
+                    <h3>Mein Weg</h3>
+                    <p>
+                        Hallo! Ich bin Navid – in Bremen aufgewachsen, 2017 mit einem Fußball und großen Plänen in die USA ausgewandert. 
+                        Als Collegespieler wurde ich Teamkapitän und All-American-Auszeichnung, ehe wir das Nationalfinale erreichten. 
+                        Heute verbinde ich diese Disziplin mit meiner Leidenschaft für Daten.
+                    </p>
+                    <p>
+                        Nach meinem BBA und MBA in Finance habe ich über zwei Jahre als Business Data Analyst bei Concord USA Fortune-500-Kunden im Finanzsektor betreut – mit Schwerpunkten auf A/B-Testing, EDA und KI-Lösungen. Seit Oktober 2025 führe ich mein eigenes Unternehmen, <strong style="color: var(--teal);">Crossroads Analytics</strong>, in Bremen – als IT-Consultant & Web Developer tätig für Kunden aus verschiedenen Branchen.
+                    </p>
+                    <div class="tag-group">
+                        <span class="tag">⚽ Fußball spielen</span>
+                        <span class="tag">🏃 Coaching</span>
+                        <span class="tag">💪 Krafttraining</span>
+                        <span class="tag">📊 Personal Optimization</span>
+                        <span class="tag">🎯 Continuous Learning</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Technisches Profil</h3>
+                    <div class="skill-group">
+                        <h4>Analytics &amp; Data Science</h4>
+                        <div class="tag-group">
+                            <span class="tag tag-teal">Python</span>
+                            <span class="tag tag-teal">SQL</span>
+                            <span class="tag tag-teal">Adobe Analytics</span>
+                            <span class="tag tag-teal">Google Analytics</span>
+                            <span class="tag tag-teal">A/B-Testing</span>
+                            <span class="tag tag-teal">EDA</span>
+                        </div>
+                    </div>
+                    <div class="skill-group">
+                        <h4>Visualisierung &amp; BI</h4>
+                        <div class="tag-group">
+                            <span class="tag tag-gold">Tableau</span>
+                            <span class="tag tag-gold">Qlik</span>
+                            <span class="tag tag-gold">Streamlit</span>
+                            <span class="tag tag-gold">Data Visualization</span>
+                        </div>
+                    </div>
+                    <div class="skill-group">
+                        <h4>Cloud &amp; Data Engineering</h4>
+                        <div class="tag-group">
+                            <span class="tag">Databricks</span>
+                            <span class="tag">Amazon Redshift</span>
+                            <span class="tag">Google BigQuery</span>
+                            <span class="tag">Snowflake</span>
+                        </div>
+                    </div>
+                    <div class="skill-group">
+                        <h4>Web-Development</h4>
+                        <div class="tag-group">
+                            <span class="tag">HTML / CSS / JS</span>
+                            <span class="tag">React</span>
+                            <span class="tag">Node.js</span>
+                            <span class="tag">Responsive Design</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Languages -->
+            <div class="reveal" style="margin-top: 2rem;">
+                <h3 style="font-family: var(--font-display); color: var(--text-bright); font-size: 1.2rem; margin-bottom: 1rem;">Sprachen</h3>
+                <div class="lang-row">
+                    <div class="lang-item">
+                        <span class="lang-flag">🇩🇪</span>
+                        <div><div class="lang-name">Deutsch</div><div class="lang-level">C2 – Muttersprache</div></div>
+                    </div>
+                    <div class="lang-item">
+                        <span class="lang-flag">🇺🇸</span>
+                        <div><div class="lang-name">Englisch</div><div class="lang-level">C2 – Muttersprache (8 Jahre in den USA)</div></div>
+                    </div>
+                    <div class="lang-item">
+                        <span class="lang-flag">🇹🇷</span>
+                        <div><div class="lang-name">Türkisch</div><div class="lang-level">C2 – Muttersprache</div></div>
+                    </div>
+                    <div class="lang-item">
+                        <span class="lang-flag">🇸🇦</span>
+                        <div><div class="lang-name">Arabisch</div><div class="lang-level">A2 – Grundkenntnisse</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Programming Languages -->
+            <div class="reveal" style="margin-top: 2rem;">
+                <h3 style="font-family: var(--font-display); color: var(--text-bright); font-size: 1.2rem; margin-bottom: 1rem;">Programmiersprachen</h3>
+                <div class="lang-row" style="flex-wrap: wrap;">
+                    <div class="lang-item" style="border-color: rgba(92,207,176,0.35);">
+                        <span class="lang-flag">🗄</span>
+                        <div>
+                            <div class="lang-name">SQL</div>
+                            <div class="lang-level" style="color: var(--teal);">Sehr gut · Täglich im Einsatz</div>
+                        </div>
+                    </div>
+                    <div class="lang-item" style="border-color: rgba(92,207,176,0.25);">
+                        <span class="lang-flag">🐍</span>
+                        <div>
+                            <div class="lang-name">Python</div>
+                            <div class="lang-level" style="color: var(--teal);">Gut · EDA, Scripting, APIs</div>
+                        </div>
+                    </div>
+                    <div class="lang-item" style="border-color: rgba(200,169,110,0.35);">
+                        <span class="lang-flag">🌐</span>
+                        <div>
+                            <div class="lang-name">HTML / CSS / JS</div>
+                            <div class="lang-level" style="color: var(--gold);">Sehr gut · Web-Projekte</div>
+                        </div>
+                    </div>
+                    <div class="lang-item">
+                        <span class="lang-flag">⚛️</span>
+                        <div>
+                            <div class="lang-name">React</div>
+                            <div class="lang-level">Grundkenntnisse · Wachsend</div>
+                        </div>
+                    </div>
+                    <div class="lang-item">
+                        <span class="lang-flag">📊</span>
+                        <div>
+                            <div class="lang-name">R</div>
+                            <div class="lang-level">Grundkenntnisse · Statistik</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certificates -->
+            <div class="reveal" style="margin-top: 2.5rem;">
+                <h3 style="font-family: var(--font-display); color: var(--text-bright); font-size: 1.2rem; margin-bottom: 1rem;">Zertifikate</h3>
+                <div class="cert-grid">
+                    <div class="cert-card">
+                        <span class="cert-icon">🏅</span>
+                        <div>
+                            <div class="cert-name">Adobe Certified Professional – Analytics Business Practitioner</div>
+                            <div class="cert-issuer">Adobe</div>
+                        </div>
+                    </div>
+                    <div class="cert-card">
+                        <span class="cert-icon">📊</span>
+                        <div>
+                            <div class="cert-name">Google Analytics Individual Qualification</div>
+                            <div class="cert-issuer">Google</div>
+                        </div>
+                    </div>
+                    <div class="cert-card">
+                        <span class="cert-icon">📈</span>
+                        <div>
+                            <div class="cert-name">Google Business Intelligence Certificate</div>
+                            <div class="cert-issuer">Coursera</div>
+                        </div>
+                    </div>
+                    <div class="cert-card">
+                        <span class="cert-icon">🔍</span>
+                        <div>
+                            <div class="cert-name">Google Data Analytics Certificate</div>
+                            <div class="cert-issuer">Coursera</div>
+                        </div>
+                    </div>
+                    <div class="cert-card">
+                        <span class="cert-icon">💹</span>
+                        <div>
+                            <div class="cert-name">Bloomberg Market Concepts</div>
+                            <div class="cert-issuer">Bloomberg</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ───── EXPERIENCE ───── -->
+    <section id="experience" style="background: rgba(255,255,255,0.015); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+        <div class="section-wrap">
+            <div class="reveal">
+                <p class="section-label">Berufserfahrung &amp; Ausbildung</p>
+                <h2 class="section-title">Meine <em>Karriere</em></h2>
+                <div class="divider"></div>
+            </div>
+
+            <div class="timeline reveal">
+
+                <!-- Crossroads Analytics -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-body">
+                        <div class="timeline-meta">
+                            <span class="timeline-company">Crossroads Analytics</span>
+                            <span class="timeline-period">10/2025 – heute</span>
+                            <span class="timeline-location">Bremen, Deutschland</span>
+                        </div>
+                        <div class="timeline-role">Gründer · IT-Consultant &amp; Web Developer</div>
+                        <ul>
+                            <li>Gründung und Aufbau des eigenen IT- und Analytics-Unternehmens in Bremen</li>
+                            <li>Planung und Umsetzung von Webseiten für Kunden aus verschiedenen Branchen</li>
+                            <li>Entwicklung responsiver Webseiten mit modernen Web-Technologien</li>
+                            <li>Selbstständige Projektsteuerung inkl. Kundenkommunikation und Anforderungsanalyse</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Concord USA -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-body">
+                        <div class="timeline-meta">
+                            <span class="timeline-company">Concord USA, LLC</span>
+                            <span class="timeline-period">07/2023 – 09/2025</span>
+                            <span class="timeline-location">Kansas City, Missouri, USA</span>
+                        </div>
+                        <div class="timeline-role">Business Data Analyst, Decision Science (40 Std./Woche)</div>
+                        <ul>
+                            <li>Durchführung und Überwachung von A/B-Tests sowie Zielgruppenanalysen zur Unterstützung datenbasierter Entscheidungen</li>
+                            <li>Aufbau starker Kundenbeziehungen als vertrauenswürdiger analytischer Partner; aktiver Beitrag zur Projektverlängerung durch konsistente Wertschöpfung</li>
+                            <li>Explorative Datenanalysen (EDA) in Python zur Identifizierung von Trends, Anomalien und Hypothesenformulierung</li>
+                            <li>Data Engineering: Entwicklung neuer Metriken aus SQL-Datenbanken und Clickstream-Analyse</li>
+                            <li>Erstellung von Berichten und Erkenntnissen in Adobe Analytics auf Basis von Webanalysedaten</li>
+                            <li>Gestaltung und Aktualisierung von Tableau- und Qlik-Dashboards</li>
+                            <li>Mitentwicklung eines KI-Suchassistenten (Streamlit + Snowflake) für interne Wissensdatenbanken, eingesetzt als Pre-Sales-Lösung</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Finance Consultant -->
+                <div class="timeline-item">
+                    <div class="timeline-dot teal"></div>
+                    <div class="timeline-body">
+                        <div class="timeline-meta">
+                            <span class="timeline-company">Finance Consultant (Freelancer)</span>
+                            <span class="timeline-period">01/2023 – 06/2023</span>
+                            <span class="timeline-location">Hays, Kansas, USA (Remote)</span>
+                        </div>
+                        <div class="timeline-role">Berater für Kleinunternehmen im Bereich Finanzen</div>
+                        <ul>
+                            <li>Analyse und Bewertung der Gesamtleistung von Kleinunternehmen (Finanzen, Rentabilität, Effizienz, Marketing)</li>
+                            <li>Erstellung datenbasierter Berichte mit konkreten Lösungen zur Verbesserung von Nachhaltigkeit und Kundenzufriedenheit</li>
+                            <li>Einrichtung geeigneter Buchhaltungssysteme zur Erhöhung der Effizienz in der Finanzberichterstattung</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Fort Hays State University – Coaching -->
+                <div class="timeline-item">
+                    <div class="timeline-dot teal"></div>
+                    <div class="timeline-body">
+                        <div class="timeline-meta">
+                            <span class="timeline-company">Fort Hays State University</span>
+                            <span class="timeline-period">01/2022 – 06/2023</span>
+                            <span class="timeline-location">Hays, Kansas, USA</span>
+                        </div>
+                        <div class="timeline-role">Co-Trainer Herrenfußball (40 Std./Woche)</div>
+                        <ul>
+                            <li>Leitung eines NCAA Division 2 Top-10-Herrenfußballprogramms</li>
+                            <li>Erziehung messbarer Fortschritte durch systematische Leistungsanalyse mit Fokus auf individuelle und kollektive Weiterentwicklung</li>
+                            <li>Analyse gegnerischer Teams und Entwicklung taktischer Spielpläne</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Rheinmetall -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-body">
+                        <div class="timeline-meta">
+                            <span class="timeline-company">Rheinmetall Electronics GmbH</span>
+                            <span class="timeline-period">06/2019 – 07/2019</span>
+                            <span class="timeline-location">Bremen, Deutschland</span>
+                        </div>
+                        <div class="timeline-role">Praktikant – Commercial and Contracts</div>
+                        <ul>
+                            <li>Prüfung, Bearbeitung und Verwaltung von Dienstleistungsverträgen</li>
+                            <li>Bewertung von Kundenanfragen hinsichtlich kommerzieller und steuerrechtlicher Umsetzbarkeit</li>
+                            <li>Erstellung von Berichten für EU-Förderanträge</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Bremer Heimstiftung -->
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-body">
+                        <div class="timeline-meta">
+                            <span class="timeline-company">Bremer Heimstiftung</span>
+                            <span class="timeline-period">06/2018 – 07/2018</span>
+                            <span class="timeline-location">Bremen, Deutschland</span>
+                        </div>
+                        <div class="timeline-role">Praktikant – Marketing</div>
+                        <ul>
+                            <li>Eigenständige Datenanalysen zur Verbesserung der Gewinnung und Bindung von Pflegeschüler:innen</li>
+                            <li>Primär- und Sekundärforschung zur Ableitung geeigneter Maßnahmen</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Education -->
+            <div class="reveal" style="margin-top: 4rem;">
+                <p class="section-label">Bildungsweg</p>
+                <h3 style="font-family: var(--font-display); font-size: 1.6rem; color: var(--text-bright); margin-bottom: 1.5rem;">Akademische Ausbildung</h3>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div class="card" style="display: grid; grid-template-columns: auto 1fr; gap: 1.25rem; align-items: center; padding: 1.5rem;">
+                        <div style="width: 48px; height: 48px; border-radius: 10px; background: rgba(200,169,110,0.1); border: 1px solid rgba(200,169,110,0.3); display:flex; align-items:center; justify-content:center; font-size: 1.4rem;">🎓</div>
+                        <div>
+                            <div style="font-weight: 600; color: var(--text-bright);">Master of Science – Computer Science (Schwerpunkt: Artificial Intelligence)</div>
+                            <div style="font-size: 0.85rem; color: var(--teal);">Ottawa University, Kansas City, USA &nbsp;·&nbsp; <span style="color: var(--gold);">06/2024 – 09/2025 (pausiert)</span></div>
+                        </div>
+                    </div>
+                    <div class="card" style="display: grid; grid-template-columns: auto 1fr; gap: 1.25rem; align-items: center; padding: 1.5rem;">
+                        <div style="width: 48px; height: 48px; border-radius: 10px; background: rgba(200,169,110,0.1); border: 1px solid rgba(200,169,110,0.3); display:flex; align-items:center; justify-content:center; font-size: 1.4rem;">🎓</div>
+                        <div>
+                            <div style="font-weight: 600; color: var(--text-bright);">Master of Business Administration (MBA) – Finance</div>
+                            <div style="font-size: 0.85rem; color: var(--teal);">Fort Hays State University, Hays, Kansas &nbsp;·&nbsp; <span style="color: var(--gold);">08/2021 – 05/2023 &nbsp;·&nbsp; GPA: 3,91/4,0</span></div>
+                        </div>
+                    </div>
+                    <div class="card" style="display: grid; grid-template-columns: auto 1fr; gap: 1.25rem; align-items: center; padding: 1.5rem;">
+                        <div style="width: 48px; height: 48px; border-radius: 10px; background: rgba(200,169,110,0.1); border: 1px solid rgba(200,169,110,0.3); display:flex; align-items:center; justify-content:center; font-size: 1.4rem;">🎓</div>
+                        <div>
+                            <div style="font-weight: 600; color: var(--text-bright);">Bachelor of Business Administration (BBA) – Finance</div>
+                            <div style="font-size: 0.85rem; color: var(--teal);">McPherson College, McPherson, Kansas &nbsp;·&nbsp; <span style="color: var(--gold);">08/2017 – 05/2021 &nbsp;·&nbsp; GPA: 3,87/4,0</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ───── PROJECTS ───── -->
+    <section id="projects">
+        <div class="section-wrap">
+            <div class="reveal">
+                <p class="section-label">Projekte</p>
+                <h2 class="section-title">Ausgewählte <em>Arbeiten</em></h2>
+                <div class="divider"></div>
+            </div>
+
+            <!-- Featured Projects -->
+            <div class="reveal">
+                <!-- Odds Maker -->
+                <div class="featured-project">
+                    <div class="featured-project-inner">
+                        <div>
+                            <div class="project-num">01</div>
+                            <h3 class="project-title">Odds Maker – Soccer Betting Platform</h3>
+                            <p class="project-desc">
+                                Web-Applikation, die Sportwetten-Quoten aus den weltweit führenden Anbietern aggregiert und vergleicht. 
+                                Nutzer finden die besten Quoten für jede Partie, verfolgen Value-Opportunities und treffen fundierte Entscheidungen – 
+                                für Premier League, Champions League, World Cup und mehr.
+                            </p>
+                            <div class="tag-group" style="margin-bottom: 1.5rem;">
+                                <span class="tag tag-teal">React</span>
+                                <span class="tag tag-teal">Node.js</span>
+                                <span class="tag tag-teal">Web Scraping</span>
+                                <span class="tag tag-teal">API Integration</span>
+                                <span class="tag tag-teal">Echtzeit-Daten</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/soccer-analytics-HB-NI/sports_betting" class="btn-solid btn-solid-outline" target="_blank">GitHub</a>
+                                <a href="https://oddsmaker.us/" class="btn-solid btn-solid-gold" target="_blank">Live Demo</a>
+                            </div>
+                        </div>
+                        <div>
+                            <img src="media/odds-maker-screenshot.jpg" alt="Odds Maker Dashboard" class="project-img">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Receipt Scanner -->
+                <div class="featured-project">
+                    <div class="featured-project-inner">
+                        <div>
+                            <div class="project-num">02</div>
+                            <h3 class="project-title">AI Receipt Scanner</h3>
+                            <p class="project-desc">
+                                Progressive Web App, die Belege per Kamera digitalisiert und mithilfe von OpenAI-Integration automatisch Kerninformationen extrahiert. 
+                                Nahtloser Export in Google Sheets für effizientes Ausgabentracking – für den privaten und geschäftlichen Einsatz.
+                            </p>
+                            <div class="tag-group" style="margin-bottom: 1.5rem;">
+                                <span class="tag tag-teal">OpenAI API</span>
+                                <span class="tag tag-teal">Google Sheets API</span>
+                                <span class="tag tag-teal">Tesseract.js</span>
+                                <span class="tag tag-teal">JavaScript</span>
+                                <span class="tag tag-teal">OCR</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/soccer-analytics-HB-NI/receipt-scanner-pwa" class="btn-solid btn-solid-outline" target="_blank">GitHub</a>
+                                <a href="https://receipt-scanner-pwa.vercel.app/" class="btn-solid btn-solid-gold" target="_blank">Live Demo</a>
+                            </div>
+                        </div>
+                        <div>
+                            <img src="media/SC8.jpg" alt="AI Receipt Scanner" class="project-img">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cache Performance -->
+                <div class="featured-project">
+                    <div class="featured-project-inner">
+                        <div>
+                            <div class="project-num">03</div>
+                            <h3 class="project-title">Cache Performance Analysis</h3>
+                            <p class="project-desc">
+                                Informatik-Projekt zur Simulation und Analyse von Cache-Performance über verschiedene Konfigurationen und Zugriffsmuster. 
+                                Evaluation von L1-Cache mit 16 KB und 32 KB – mit gemischten, zufälligen und sequenziellen Zugriffsmustern zur Optimierung 
+                                der Memory-Hierarchy für High-Performance-Anwendungen.
+                            </p>
+                            <div class="tag-group" style="margin-bottom: 1.5rem;">
+                                <span class="tag">Computer Architecture</span>
+                                <span class="tag">Memory Systems</span>
+                                <span class="tag">Performance Analysis</span>
+                                <span class="tag">CI/CD Pipeline</span>
+                                <span class="tag">GitHub Actions</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://github.com/soccer-analytics-HB-NI/sniper-cache-performance-analysis" class="btn-solid btn-solid-outline" target="_blank">GitHub</a>
+                                <a href="https://github.com/soccer-analytics-HB-NI/sniper-cache-performance-analysis/actions/runs/16430040548" class="btn-solid btn-solid-gold" target="_blank">Ergebnisse</a>
+                            </div>
+                        </div>
+                        <div>
+                            <img src="media/cache_performance_analysis.png" alt="Cache Performance Analysis" class="project-img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professional Work -->
+            <div class="reveal" style="margin-top: 4rem;">
+                <p class="section-label" style="margin-bottom: 1.5rem;">Berufliche Projekterfahrung</p>
+                <div class="pro-grid">
+                    <div class="pro-card">
+                        <div class="pro-card-icon">🧪</div>
+                        <h3>Finanzsektor A/B-Testing</h3>
+                        <p>Konzeption und Implementierung eines umfassenden A/B-Testing-Frameworks für Fortune-500-Kunden – inklusive statistischer Analyse und Audience Sizing.</p>
+                        <div class="tag-group" style="margin-top: 0.75rem;">
+                            <span class="tag tag-teal" style="font-size:0.72rem;">Python</span>
+                            <span class="tag tag-teal" style="font-size:0.72rem;">SQL</span>
+                            <span class="tag tag-teal" style="font-size:0.72rem;">Adobe Analytics</span>
+                        </div>
+                    </div>
+                    <div class="pro-card">
+                        <div class="pro-card-icon">🤖</div>
+                        <h3>KI-Suchassistent</h3>
+                        <p>Entwicklung eines skalierbaren KI-Suchassistenten mit Streamlit und Snowflake für interne Wissensdatenbanken und Pre-Sales-Demonstrationen.</p>
+                        <div class="tag-group" style="margin-top: 0.75rem;">
+                            <span class="tag tag-gold" style="font-size:0.72rem;">Streamlit</span>
+                            <span class="tag tag-gold" style="font-size:0.72rem;">Snowflake</span>
+                            <span class="tag tag-gold" style="font-size:0.72rem;">AI/ML</span>
+                        </div>
+                    </div>
+                    <div class="pro-card">
+                        <div class="pro-card-icon">📊</div>
+                        <h3>Interaktive Dashboards</h3>
+                        <p>Konzeption und Pflege von Tableau- und Qlik-Dashboards, die Business Intelligence und Entscheidungsfindung für Finanzsektor-Kunden verbessern.</p>
+                        <div class="tag-group" style="margin-top: 0.75rem;">
+                            <span class="tag" style="font-size:0.72rem;">Tableau</span>
+                            <span class="tag" style="font-size:0.72rem;">Qlik</span>
+                            <span class="tag" style="font-size:0.72rem;">BI</span>
+                        </div>
+                    </div>
+                    <div class="pro-card">
+                        <div class="pro-card-icon">🔍</div>
+                        <h3>Clickstream Analytics</h3>
+                        <p>Tiefgreifende EDA mit Python-Notebooks und SQL-Datenbanken, Nutzung von Clickstream-Daten zur Trendidentifikation und Hypothesenentwicklung.</p>
+                        <div class="tag-group" style="margin-top: 0.75rem;">
+                            <span class="tag" style="font-size:0.72rem;">Python</span>
+                            <span class="tag" style="font-size:0.72rem;">BigQuery</span>
+                            <span class="tag" style="font-size:0.72rem;">SQL</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ───── SOCCER ───── -->
+    <section id="soccer" style="background: rgba(255,255,255,0.015); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+        <div class="section-wrap">
+            <div class="reveal">
+                <p class="section-label">Die andere Leidenschaft</p>
+                <h2 class="section-title">Fußball als <em>Lebensschule</em></h2>
+                <div class="divider"></div>
+                <p style="max-width: 620px; color: var(--text-main); line-height: 1.8; margin-bottom: 3rem;">
+                    Fußball hat mich gelehrt, was keine Universität vermitteln kann: Führung unter Druck, 
+                    kollektive Strategie, Rückschläge als Daten für Verbesserung. Als Teamkapitän und All-American war 
+                    das Nationale Finale 2021 der Höhepunkt – heute coache ich die nächste Generation.
+                </p>
+            </div>
+            <div class="soccer-grid reveal">
+                <div class="soccer-card">
+                    <img src="media/SC3.jpg" alt="Navid beim Coaching">
+                    <div class="soccer-card-body">
+                        <h3>Coaching in Aktion</h3>
+                        <p>Leitung von Trainingseinheiten und Förderung junger Talente auf College- und Vereinsebene.</p>
+                    </div>
+                </div>
+                <div class="soccer-card">
+                    <img src="media/SC4.jpg" alt="Navid im Spiel">
+                    <div class="soccer-card-body">
+                        <h3>Spieltag</h3>
+                        <p>Wettkampf auf höchstem College-Niveau – wo Leadership und Teamwork genauso zählen wie Technik.</p>
+                    </div>
+                </div>
+                <div class="soccer-card">
+                    <img src="media/SC2.jpg" alt="Navid mit dem Team">
+                    <div class="soccer-card-body">
+                        <h3>Champions formen</h3>
+                        <p>Förderung von Spielern in fußballerischen Fähigkeiten und analytischem Denken – Fähigkeiten, die in jedem Bereich nützlich sind.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ───── CONTACT ───── -->
+    <section id="contact">
+        <div class="section-wrap">
+            <div class="reveal">
+                <p class="section-label">Kontakt</p>
+                <h2 class="section-title">Lass uns <em>sprechen</em></h2>
+                <div class="divider"></div>
+            </div>
+            <div class="contact-wrap reveal">
+                <p>
+                    Ich bin offen für neue Möglichkeiten, interessante Projekte oder einfach ein Gespräch über Daten, Technologie oder Fußball. 
+                    Meld dich gerne!
+                </p>
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-bottom: 2rem;">
+                    <a href="#" class="btn-solid btn-solid-gold" id="emailBtnContact">✉ E-Mail kopieren</a>
+                    <a href="https://linkedin.com/in/nistanbullu/" class="btn-solid btn-solid-outline" target="_blank">LinkedIn</a>
+                </div>
+                <div class="social-row" style="justify-content: center;">
+                    <a href="#" class="social-btn" id="emailBtn2" title="E-Mail kopieren">
+                        <img src="media/email-logo.jpg" alt="E-Mail">
+                    </a>
+                    <a href="https://linkedin.com/in/nistanbullu/" class="social-btn" title="LinkedIn" target="_blank">
+                        <img src="media/linkedin-logo.jpg" alt="LinkedIn">
+                    </a>
+                    <a href="https://github.com/soccer-analytics-HB-NI" class="social-btn" title="GitHub" target="_blank">
+                        <img src="media/github-logo.jpg" alt="GitHub">
+                    </a>
+                    <a href="https://instagram.com/navid_ist" class="social-btn" title="Instagram" target="_blank">
+                        <img src="media/instagram-logo.jpg" alt="Instagram">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 <span>Navid Istanbullu</span> · Alle Rechte vorbehalten · Bremen, Deutschland</p>
+    </footer>
+
+    <!-- ───── COOKIE BANNER ───── -->
+    <div id="cookieBanner" style="
+        position: fixed; bottom: 0; left: 0; right: 0; z-index: 9998;
+        background: rgba(13,17,27,0.97);
+        backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(200,169,110,0.2);
+        padding: 1.25rem 2rem;
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 1.5rem; flex-wrap: wrap;
+        transform: translateY(100%);
+        transition: transform 0.5s ease;
+    ">
+        <div style="display:flex; align-items:flex-start; gap: 1rem; flex: 1; min-width: 260px;">
+            <span style="font-size: 1.4rem; flex-shrink:0; margin-top:2px;">🍪</span>
+            <div>
+                <p style="font-size: 0.9rem; color: var(--text-bright); font-weight: 500; margin-bottom: 0.25rem;">Hinweis zu Cookies</p>
+                <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.6;">
+                    Diese Website verwendet derzeit <strong style="color: var(--text-main);">keine Tracking-Cookies</strong> und gibt keine Daten an Dritte weiter. 
+                    Es werden ausschließlich technisch notwendige Einstellungen im Browser gespeichert (z.&nbsp;B. diese Cookie-Zustimmung).
+                </p>
+            </div>
+        </div>
+        <div style="display:flex; gap: 0.75rem; flex-shrink:0;">
+            <button id="cookieAccept" style="
+                padding: 0.6rem 1.4rem;
+                background: var(--gold);
+                color: #0d0a06;
+                border: none; border-radius: 7px;
+                font-family: var(--font-body);
+                font-size: 0.85rem; font-weight: 600;
+                cursor: pointer;
+                transition: background 0.2s;
+            " onmouseover="this.style.background='#e8c98e'" onmouseout="this.style.background='var(--gold)'">
+                Verstanden
+            </button>
+            <button id="cookieDecline" style="
+                padding: 0.6rem 1.4rem;
+                background: transparent;
+                color: var(--text-muted);
+                border: 1px solid var(--border);
+                border-radius: 7px;
+                font-family: var(--font-body);
+                font-size: 0.85rem; font-weight: 500;
+                cursor: pointer;
+                transition: all 0.2s;
+            " onmouseover="this.style.borderColor='var(--text-muted)'; this.style.color='var(--text-main)'"
+               onmouseout="this.style.borderColor='var(--border)'; this.style.color='var(--text-muted)'">
+                Schließen
+            </button>
+        </div>
+    </div>
+
     <script>
-        // Create animated background particles
-        function createParticles() {
-            const bgAnimation = document.getElementById('bgAnimation');
-            const particleCount = 50;
-
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
-                bgAnimation.appendChild(particle);
+        // ── COOKIE BANNER ──
+        (function() {
+            const banner = document.getElementById('cookieBanner');
+            const accepted = localStorage.getItem('cookieNotice');
+            if (!accepted) {
+                setTimeout(() => { banner.style.transform = 'translateY(0)'; }, 1200);
             }
-        }
+            function dismiss() {
+                banner.style.transform = 'translateY(100%)';
+                localStorage.setItem('cookieNotice', '1');
+            }
+            document.getElementById('cookieAccept').addEventListener('click', dismiss);
+            document.getElementById('cookieDecline').addEventListener('click', dismiss);
+        })();
+    </script>
 
-        // Mobile menu functionality
-        function initMobileMenu() {
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            const navLinks = document.getElementById('navLinks');
-
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileMenuBtn.classList.toggle('active');
-                navLinks.classList.toggle('active');
-            });
-
-            // Close menu when clicking on a link
-            navLinks.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenuBtn.classList.remove('active');
-                    navLinks.classList.remove('active');
-                });
-            });
-
-            // Close menu when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!mobileMenuBtn.contains(e.target) && !navLinks.contains(e.target)) {
-                    mobileMenuBtn.classList.remove('active');
-                    navLinks.classList.remove('active');
-                }
-            });
-        }
-
-        // Navbar scroll effect
+    <script>
+        // ── NAV SCROLL ──
+        const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 100) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
+            navbar.classList.toggle('scrolled', window.scrollY > 80);
+        });
+
+        // ── MOBILE MENU ──
+        const btn = document.getElementById('mobileBtn');
+        const links = document.getElementById('navLinks');
+        btn.addEventListener('click', () => {
+            btn.classList.toggle('active');
+            links.classList.toggle('open');
+        });
+        links.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => {
+                btn.classList.remove('active');
+                links.classList.remove('open');
+            });
+        });
+        document.addEventListener('click', e => {
+            if (!btn.contains(e.target) && !links.contains(e.target)) {
+                btn.classList.remove('active');
+                links.classList.remove('open');
             }
         });
 
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+        // ── SMOOTH SCROLL ──
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                const target = document.querySelector(a.getAttribute('href'));
                 if (target) {
-                    const offsetTop = target.offsetTop - 80; // Account for fixed navbar
-                    window.scrollTo({
-                        top: offsetTop,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
-                }
-            });
-        }, observerOptions);
-
-        // Observe all sections
-        document.querySelectorAll('section').forEach(section => {
-            observer.observe(section);
-        });
-
-        // Initialize everything when page loads
-        window.addEventListener('load', () => {
-            createParticles();
-            initMobileMenu();
-            initEmailCopy();
-        });
-
-        // Email copy functionality
-        function initEmailCopy() {
-            const email = 'navido972@gmail.com';
-            const emailButtons = document.querySelectorAll('#emailCopy, #emailCopyContact');
-            
-            emailButtons.forEach(button => {
-                button.addEventListener('click', async (e) => {
                     e.preventDefault();
-                    
-                    try {
-                        await navigator.clipboard.writeText(email);
-                        showToast('Email copied to clipboard!');
-                    } catch (err) {
-                        // Fallback for older browsers
-                        const textArea = document.createElement('textarea');
-                        textArea.value = email;
-                        document.body.appendChild(textArea);
-                        textArea.select();
-                        document.execCommand('copy');
-                        document.body.removeChild(textArea);
-                        showToast('Email copied to clipboard!');
-                    }
-                });
+                    window.scrollTo({ top: target.offsetTop - 68, behavior: 'smooth' });
+                }
             });
+        });
+
+        // ── REVEAL ON SCROLL ──
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // ── EMAIL COPY ──
+        const EMAIL = 'navido972@gmail.com';
+        const toast = document.getElementById('toast');
+
+        function copyEmail(e) {
+            e.preventDefault();
+            navigator.clipboard.writeText(EMAIL).catch(() => {
+                const t = document.createElement('textarea');
+                t.value = EMAIL; document.body.appendChild(t);
+                t.select(); document.execCommand('copy');
+                document.body.removeChild(t);
+            });
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2800);
         }
 
-        // Show toast notification
-        function showToast(message) {
-            // Remove existing toast if any
-            const existingToast = document.querySelector('.toast');
-            if (existingToast) {
-                existingToast.remove();
-            }
-
-            // Create new toast
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = message;
-            document.body.appendChild(toast);
-
-            // Show toast
-            setTimeout(() => {
-                toast.classList.add('show');
-            }, 100);
-
-            // Hide and remove toast after 3 seconds
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => {
-                    if (toast.parentNode) {
-                        toast.parentNode.removeChild(toast);
-                    }
-                }, 300);
-            }, 3000);
-        }
-
-        // Add hover effects to project cards
-        document.querySelectorAll('.project-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-15px) scale(1.02)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0) scale(1)';
-            });
+        ['emailBtn','emailBtn2','emailBtnContact'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('click', copyEmail);
         });
     </script>
 </body>
