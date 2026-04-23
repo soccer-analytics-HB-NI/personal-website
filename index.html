@@ -248,13 +248,11 @@
             background: transparent;
             border: none;
             cursor: pointer;
-            /* underline */
             border-bottom: 1px solid rgba(200,169,110,0.45);
             padding-bottom: 3px;
             transition: color 0.3s ease;
             overflow: hidden;
         }
-        /* shimmer line that sweeps left→right on hover */
         .btn::after {
             content: '';
             position: absolute;
@@ -266,7 +264,6 @@
         .btn:hover::after { left: 100%; }
         .btn:hover { color: var(--gold-light); }
 
-        /* Variant: teal for secondary */
         .btn-outline {
             color: var(--text-bright);
             border-bottom-color: rgba(255,255,255,0.25);
@@ -276,7 +273,6 @@
         }
         .btn-outline:hover { color: var(--teal); }
 
-        /* Variant: accent red */
         .btn-red {
             color: var(--accent-red);
             border-bottom-color: rgba(212,115,90,0.4);
@@ -286,7 +282,6 @@
         }
         .btn-red:hover { color: #e08570; }
 
-        /* Keep solid buttons for non-hero contexts (contact section etc) */
         .btn-solid {
             display: inline-flex; align-items: center; gap: 0.5rem;
             padding: 0.7rem 1.5rem;
@@ -716,6 +711,32 @@
         }
         footer span { color: var(--gold); }
 
+        /* ───── LANGUAGE SWITCHER ───── */
+        .lang-switch {
+            display: flex; align-items: center; gap: 0;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            padding: 3px;
+            flex-shrink: 0;
+        }
+        .lang-switch button {
+            background: none; border: none; cursor: pointer;
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            padding: 0.3rem 0.7rem;
+            border-radius: 50px;
+            transition: all 0.25s;
+        }
+        .lang-switch button.active {
+            background: var(--gold);
+            color: #0d0a06;
+        }
+        .lang-switch button:hover:not(.active) { color: var(--text-bright); }
+
         /* ───── TOAST ───── */
         .toast {
             position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999;
@@ -775,19 +796,29 @@
         <div class="ambient-blob blob-3"></div>
     </div>
 
+    <!-- Toast notification -->
+    <!-- FIX: Toast element was missing from the HTML entirely -->
+    <div class="toast" id="toast"></div>
+
     <!-- Navigation -->
     <nav id="navbar">
         <div class="nav-logo">Navid <span>Istanbullu</span></div>
-        <div class="mobile-menu-btn" id="mobileBtn" aria-label="Menü">
-            <span></span><span></span><span></span>
+        <div style="display:flex; align-items:center; gap: 1.5rem;">
+            <div class="lang-switch">
+                <button id="langDE" class="active" onclick="setLang('de')">DE</button>
+                <button id="langEN" onclick="setLang('en')">EN</button>
+            </div>
+            <div class="mobile-menu-btn" id="mobileBtn" aria-label="Menü">
+                <span></span><span></span><span></span>
+            </div>
         </div>
         <ul class="nav-links" id="navLinks">
-            <li><a href="#home">Start</a></li>
-            <li><a href="#about">Über mich</a></li>
-            <li><a href="#experience">Erfahrung</a></li>
-            <li><a href="#projects">Projekte</a></li>
-            <li><a href="#soccer">Fußball</a></li>
-            <li><a href="#contact">Kontakt</a></li>
+            <li><a href="#home" data-i18n="nav_home">Start</a></li>
+            <li><a href="#about" data-i18n="nav_about">Über mich</a></li>
+            <li><a href="#experience" data-i18n="nav_experience">Erfahrung</a></li>
+            <li><a href="#projects" data-i18n="nav_projects">Projekte</a></li>
+            <li><a href="#soccer" data-i18n="nav_soccer">Fußball</a></li>
+            <li><a href="#contact" data-i18n="nav_contact">Kontakt</a></li>
         </ul>
     </nav>
 
@@ -797,17 +828,17 @@
             <div class="profile-ring">
                 <img src="media/profile-photo.jpg" alt="Navid Istanbullu">
             </div>
-            <div class="hero-label">Business Data Analyst · Bremen, Deutschland</div>
+            <div class="hero-label" data-i18n="hero_label">Business Data Analyst · Bremen, Deutschland</div>
             <h1>Navid <em>Istanbullu</em></h1>
-            <p class="hero-role">Data Analytics &amp; Decision Science · IT-Consultant &amp; Web Developer</p>
-            <p class="hero-desc">
+            <p class="hero-role" data-i18n="hero_role">Data Analytics &amp; Decision Science · IT-Consultant &amp; Web Developer</p>
+            <p class="hero-desc" data-i18n="hero_desc">
                 Deutsch-amerikanischer Data Analyst mit Erfahrung in Fortune-500-Projekten, A/B-Testing, KI-Initiativen und Web-Development. 
                 Ehemaliger College-Fußballkapitän, der analytisches Denken vom Spielfeld in die Datenwelt mitgebracht hat.
             </p>
             <div class="hero-cta-group">
-                <a href="https://drive.google.com/file/d/1p0_ATZxKn4JZj1NzVK3i0vcQC78ERxqV/view?usp=drive_link" class="btn btn-primary" target="_blank">Lebenslauf anfordern (EN)</a>
-                <a href="https://drive.google.com/file/d/1bJPJ-pRMBkIrvq2jJkvXb94wAVd7iVFO/view?usp=drive_link" class="btn btn-red" target="_blank">Lebenslauf anfordern (DE)</a>
-                <a href="#contact" class="btn btn-outline">Kontakt aufnehmen</a>
+                <a href="https://drive.google.com/file/d/1p0_ATZxKn4JZj1NzVK3i0vcQC78ERxqV/view?usp=drive_link" class="btn btn-primary" target="_blank" data-i18n="cv_en">Lebenslauf anfordern (EN)</a>
+                <a href="https://drive.google.com/file/d/1bJPJ-pRMBkIrvq2jJkvXb94wAVd7iVFO/view?usp=drive_link" class="btn btn-red" target="_blank" data-i18n="cv_de">Lebenslauf anfordern (DE)</a>
+                <a href="#contact" class="btn btn-outline" data-i18n="hero_contact">Kontakt aufnehmen</a>
             </div>
             <div class="social-row">
                 <a href="#" class="social-btn" id="emailBtn" title="E-Mail kopieren">
@@ -824,26 +855,26 @@
                 </a>
             </div>
         </div>
-        <div class="scroll-hint">Scrollen</div>
+        <div class="scroll-hint" data-i18n="scroll_hint">Scrollen</div>
     </section>
 
     <!-- ───── ABOUT ───── -->
     <section id="about">
         <div class="section-wrap">
             <div class="reveal">
-                <p class="section-label">Über mich</p>
-                <h2 class="section-title">Vom Spielfeld <em>zum Datenpipeline</em></h2>
+                <p class="section-label" data-i18n="about_label">Über mich</p>
+                <h2 class="section-title" data-i18n="about_title">Vom Spielfeld <em>zum Datenpipeline</em></h2>
                 <div class="divider"></div>
             </div>
             <div class="about-grid reveal">
                 <div class="card card-gold">
-                    <h3>Mein Weg</h3>
-                    <p>
+                    <h3 data-i18n="about_journey_title">Mein Weg</h3>
+                    <p data-i18n="about_journey_p1">
                         Hallo! Ich bin Navid – in Bremen aufgewachsen, 2017 mit einem Fußball und großen Plänen in die USA ausgewandert. 
                         Als Collegespieler wurde ich Teamkapitän und All-American-Auszeichnung, ehe wir das Nationalfinale erreichten. 
                         Heute verbinde ich diese Disziplin mit meiner Leidenschaft für Daten.
                     </p>
-                    <p>
+                    <p data-i18n="about_journey_p2">
                         Nach meinem BBA und MBA in Finance habe ich über zwei Jahre als Business Data Analyst bei Concord USA Fortune-500-Kunden im Finanzsektor betreut – mit Schwerpunkten auf A/B-Testing, EDA und KI-Lösungen. Seit Oktober 2025 führe ich mein eigenes Unternehmen, <strong style="color: var(--teal);">Crossroads Analytics</strong>, in Bremen – als IT-Consultant & Web Developer tätig für Kunden aus verschiedenen Branchen.
                     </p>
                     <div class="tag-group">
@@ -855,9 +886,9 @@
                     </div>
                 </div>
                 <div class="card">
-                    <h3>Technisches Profil</h3>
+                    <h3 data-i18n="about_skills_title">Technisches Profil</h3>
                     <div class="skill-group">
-                        <h4>Analytics &amp; Data Science</h4>
+                        <h4 data-i18n="skill_analytics">Analytics &amp; Data Science</h4>
                         <div class="tag-group">
                             <span class="tag tag-teal">Python</span>
                             <span class="tag tag-teal">SQL</span>
@@ -868,7 +899,7 @@
                         </div>
                     </div>
                     <div class="skill-group">
-                        <h4>Visualisierung &amp; BI</h4>
+                        <h4 data-i18n="skill_viz">Visualisierung &amp; BI</h4>
                         <div class="tag-group">
                             <span class="tag tag-gold">Tableau</span>
                             <span class="tag tag-gold">Qlik</span>
@@ -877,7 +908,7 @@
                         </div>
                     </div>
                     <div class="skill-group">
-                        <h4>Cloud &amp; Data Engineering</h4>
+                        <h4 data-i18n="skill_cloud">Cloud &amp; Data Engineering</h4>
                         <div class="tag-group">
                             <span class="tag">Databricks</span>
                             <span class="tag">Amazon Redshift</span>
@@ -1010,8 +1041,8 @@
     <section id="experience" style="background: rgba(255,255,255,0.015); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
         <div class="section-wrap">
             <div class="reveal">
-                <p class="section-label">Berufserfahrung &amp; Ausbildung</p>
-                <h2 class="section-title">Meine <em>Karriere</em></h2>
+                <p class="section-label" data-i18n="exp_label">Berufserfahrung &amp; Ausbildung</p>
+                <h2 class="section-title" data-i18n="exp_title">Meine <em>Karriere</em></h2>
                 <div class="divider"></div>
             </div>
 
@@ -1023,15 +1054,15 @@
                     <div class="timeline-body">
                         <div class="timeline-meta">
                             <span class="timeline-company">Crossroads Analytics</span>
-                            <span class="timeline-period">10/2025 – heute</span>
+                            <span class="timeline-period" data-i18n="exp_crossroads_period">10/2025 – heute</span>
                             <span class="timeline-location">Bremen, Deutschland</span>
                         </div>
-                        <div class="timeline-role">Gründer · IT-Consultant &amp; Web Developer</div>
+                        <div class="timeline-role" data-i18n="exp_crossroads_role">Gründer · IT-Consultant &amp; Web Developer</div>
                         <ul>
-                            <li>Gründung und Aufbau des eigenen IT- und Analytics-Unternehmens in Bremen</li>
-                            <li>Planung und Umsetzung von Webseiten für Kunden aus verschiedenen Branchen</li>
-                            <li>Entwicklung responsiver Webseiten mit modernen Web-Technologien</li>
-                            <li>Selbstständige Projektsteuerung inkl. Kundenkommunikation und Anforderungsanalyse</li>
+                            <li data-i18n="exp_crossroads_li1">Gründung und Aufbau des eigenen IT- und Analytics-Unternehmens in Bremen</li>
+                            <li data-i18n="exp_crossroads_li2">Planung und Umsetzung von Webseiten für Kunden aus verschiedenen Branchen</li>
+                            <li data-i18n="exp_crossroads_li3">Entwicklung responsiver Webseiten mit modernen Web-Technologien</li>
+                            <li data-i18n="exp_crossroads_li4">Selbstständige Projektsteuerung inkl. Kundenkommunikation und Anforderungsanalyse</li>
                         </ul>
                     </div>
                 </div>
@@ -1045,15 +1076,15 @@
                             <span class="timeline-period">07/2023 – 09/2025</span>
                             <span class="timeline-location">Kansas City, Missouri, USA</span>
                         </div>
-                        <div class="timeline-role">Business Data Analyst, Decision Science (40 Std./Woche)</div>
+                        <div class="timeline-role" data-i18n="exp_concord_role">Business Data Analyst, Decision Science (40 Std./Woche)</div>
                         <ul>
-                            <li>Durchführung und Überwachung von A/B-Tests sowie Zielgruppenanalysen zur Unterstützung datenbasierter Entscheidungen</li>
-                            <li>Aufbau starker Kundenbeziehungen als vertrauenswürdiger analytischer Partner; aktiver Beitrag zur Projektverlängerung durch konsistente Wertschöpfung</li>
-                            <li>Explorative Datenanalysen (EDA) in Python zur Identifizierung von Trends, Anomalien und Hypothesenformulierung</li>
-                            <li>Data Engineering: Entwicklung neuer Metriken aus SQL-Datenbanken und Clickstream-Analyse</li>
-                            <li>Erstellung von Berichten und Erkenntnissen in Adobe Analytics auf Basis von Webanalysedaten</li>
-                            <li>Gestaltung und Aktualisierung von Tableau- und Qlik-Dashboards</li>
-                            <li>Mitentwicklung eines KI-Suchassistenten (Streamlit + Snowflake) für interne Wissensdatenbanken, eingesetzt als Pre-Sales-Lösung</li>
+                            <li data-i18n="exp_concord_li1">Durchführung und Überwachung von A/B-Tests sowie Zielgruppenanalysen zur Unterstützung datenbasierter Entscheidungen</li>
+                            <li data-i18n="exp_concord_li2">Aufbau starker Kundenbeziehungen als vertrauenswürdiger analytischer Partner; aktiver Beitrag zur Projektverlängerung durch konsistente Wertschöpfung</li>
+                            <li data-i18n="exp_concord_li3">Explorative Datenanalysen (EDA) in Python zur Identifizierung von Trends, Anomalien und Hypothesenformulierung</li>
+                            <li data-i18n="exp_concord_li4">Data Engineering: Entwicklung neuer Metriken aus SQL-Datenbanken und Clickstream-Analyse</li>
+                            <li data-i18n="exp_concord_li5">Erstellung von Berichten und Erkenntnissen in Adobe Analytics auf Basis von Webanalysedaten</li>
+                            <li data-i18n="exp_concord_li6">Gestaltung und Aktualisierung von Tableau- und Qlik-Dashboards</li>
+                            <li data-i18n="exp_concord_li7">Mitentwicklung eines KI-Suchassistenten (Streamlit + Snowflake) für interne Wissensdatenbanken, eingesetzt als Pre-Sales-Lösung</li>
                         </ul>
                     </div>
                 </div>
@@ -1063,15 +1094,15 @@
                     <div class="timeline-dot teal"></div>
                     <div class="timeline-body">
                         <div class="timeline-meta">
-                            <span class="timeline-company">Finance Consultant (Freelancer)</span>
+                            <span class="timeline-company" data-i18n="exp_finance_company">Finance Consultant (Freelancer)</span>
                             <span class="timeline-period">01/2023 – 06/2023</span>
                             <span class="timeline-location">Hays, Kansas, USA (Remote)</span>
                         </div>
-                        <div class="timeline-role">Berater für Kleinunternehmen im Bereich Finanzen</div>
+                        <div class="timeline-role" data-i18n="exp_finance_role">Berater für Kleinunternehmen im Bereich Finanzen</div>
                         <ul>
-                            <li>Analyse und Bewertung der Gesamtleistung von Kleinunternehmen (Finanzen, Rentabilität, Effizienz, Marketing)</li>
-                            <li>Erstellung datenbasierter Berichte mit konkreten Lösungen zur Verbesserung von Nachhaltigkeit und Kundenzufriedenheit</li>
-                            <li>Einrichtung geeigneter Buchhaltungssysteme zur Erhöhung der Effizienz in der Finanzberichterstattung</li>
+                            <li data-i18n="exp_finance_li1">Analyse und Bewertung der Gesamtleistung von Kleinunternehmen (Finanzen, Rentabilität, Effizienz, Marketing)</li>
+                            <li data-i18n="exp_finance_li2">Erstellung datenbasierter Berichte mit konkreten Lösungen zur Verbesserung von Nachhaltigkeit und Kundenzufriedenheit</li>
+                            <li data-i18n="exp_finance_li3">Einrichtung geeigneter Buchhaltungssysteme zur Erhöhung der Effizienz in der Finanzberichterstattung</li>
                         </ul>
                     </div>
                 </div>
@@ -1085,11 +1116,11 @@
                             <span class="timeline-period">01/2022 – 06/2023</span>
                             <span class="timeline-location">Hays, Kansas, USA</span>
                         </div>
-                        <div class="timeline-role">Co-Trainer Herrenfußball (40 Std./Woche)</div>
+                        <div class="timeline-role" data-i18n="exp_fhsu_role">Co-Trainer Herrenfußball (40 Std./Woche)</div>
                         <ul>
-                            <li>Leitung eines NCAA Division 2 Top-10-Herrenfußballprogramms</li>
-                            <li>Erziehung messbarer Fortschritte durch systematische Leistungsanalyse mit Fokus auf individuelle und kollektive Weiterentwicklung</li>
-                            <li>Analyse gegnerischer Teams und Entwicklung taktischer Spielpläne</li>
+                            <li data-i18n="exp_fhsu_li1">Leitung eines NCAA Division 2 Top-10-Herrenfußballprogramms</li>
+                            <li data-i18n="exp_fhsu_li2">Erziehung messbarer Fortschritte durch systematische Leistungsanalyse mit Fokus auf individuelle und kollektive Weiterentwicklung</li>
+                            <li data-i18n="exp_fhsu_li3">Analyse gegnerischer Teams und Entwicklung taktischer Spielpläne</li>
                         </ul>
                     </div>
                 </div>
@@ -1103,11 +1134,11 @@
                             <span class="timeline-period">06/2019 – 07/2019</span>
                             <span class="timeline-location">Bremen, Deutschland</span>
                         </div>
-                        <div class="timeline-role">Praktikant – Commercial and Contracts</div>
+                        <div class="timeline-role" data-i18n="exp_rheinmetall_role">Praktikant – Commercial and Contracts</div>
                         <ul>
-                            <li>Prüfung, Bearbeitung und Verwaltung von Dienstleistungsverträgen</li>
-                            <li>Bewertung von Kundenanfragen hinsichtlich kommerzieller und steuerrechtlicher Umsetzbarkeit</li>
-                            <li>Erstellung von Berichten für EU-Förderanträge</li>
+                            <li data-i18n="exp_rheinmetall_li1">Prüfung, Bearbeitung und Verwaltung von Dienstleistungsverträgen</li>
+                            <li data-i18n="exp_rheinmetall_li2">Bewertung von Kundenanfragen hinsichtlich kommerzieller und steuerrechtlicher Umsetzbarkeit</li>
+                            <li data-i18n="exp_rheinmetall_li3">Erstellung von Berichten für EU-Förderanträge</li>
                         </ul>
                     </div>
                 </div>
@@ -1121,10 +1152,10 @@
                             <span class="timeline-period">06/2018 – 07/2018</span>
                             <span class="timeline-location">Bremen, Deutschland</span>
                         </div>
-                        <div class="timeline-role">Praktikant – Marketing</div>
+                        <div class="timeline-role" data-i18n="exp_heimstiftung_role">Praktikant – Marketing</div>
                         <ul>
-                            <li>Eigenständige Datenanalysen zur Verbesserung der Gewinnung und Bindung von Pflegeschüler:innen</li>
-                            <li>Primär- und Sekundärforschung zur Ableitung geeigneter Maßnahmen</li>
+                            <li data-i18n="exp_heimstiftung_li1">Eigenständige Datenanalysen zur Verbesserung der Gewinnung und Bindung von Pflegeschüler:innen</li>
+                            <li data-i18n="exp_heimstiftung_li2">Primär- und Sekundärforschung zur Ableitung geeigneter Maßnahmen</li>
                         </ul>
                     </div>
                 </div>
@@ -1132,28 +1163,28 @@
 
             <!-- Education -->
             <div class="reveal" style="margin-top: 4rem;">
-                <p class="section-label">Bildungsweg</p>
-                <h3 style="font-family: var(--font-display); font-size: 1.6rem; color: var(--text-bright); margin-bottom: 1.5rem;">Akademische Ausbildung</h3>
+                <p class="section-label" data-i18n="edu_label">Bildungsweg</p>
+                <h3 data-i18n="edu_title" style="font-family: var(--font-display); font-size: 1.6rem; color: var(--text-bright); margin-bottom: 1.5rem;">Akademische Ausbildung</h3>
                 <div style="display: flex; flex-direction: column; gap: 1rem;">
                     <div class="card" style="display: grid; grid-template-columns: auto 1fr; gap: 1.25rem; align-items: center; padding: 1.5rem;">
                         <div style="width: 48px; height: 48px; border-radius: 10px; background: rgba(200,169,110,0.1); border: 1px solid rgba(200,169,110,0.3); display:flex; align-items:center; justify-content:center; font-size: 1.4rem;">🎓</div>
                         <div>
-                            <div style="font-weight: 600; color: var(--text-bright);">Master of Science – Computer Science (Schwerpunkt: Artificial Intelligence)</div>
-                            <div style="font-size: 0.85rem; color: var(--teal);">Ottawa University, Kansas City, USA &nbsp;·&nbsp; <span style="color: var(--gold);">06/2024 – 09/2025 (pausiert)</span></div>
+                            <div data-i18n="edu_msc_title" style="font-weight: 600; color: var(--text-bright);">Master of Science – Computer Science (Schwerpunkt: Artificial Intelligence)</div>
+                            <div style="font-size: 0.85rem; color: var(--teal);">Ottawa University, Kansas City, USA &nbsp;·&nbsp; <span data-i18n="edu_msc_period" style="color: var(--gold);">06/2024 – 09/2025 (pausiert)</span></div>
                         </div>
                     </div>
                     <div class="card" style="display: grid; grid-template-columns: auto 1fr; gap: 1.25rem; align-items: center; padding: 1.5rem;">
                         <div style="width: 48px; height: 48px; border-radius: 10px; background: rgba(200,169,110,0.1); border: 1px solid rgba(200,169,110,0.3); display:flex; align-items:center; justify-content:center; font-size: 1.4rem;">🎓</div>
                         <div>
-                            <div style="font-weight: 600; color: var(--text-bright);">Master of Business Administration (MBA) – Finance</div>
-                            <div style="font-size: 0.85rem; color: var(--teal);">Fort Hays State University, Hays, Kansas &nbsp;·&nbsp; <span style="color: var(--gold);">08/2021 – 05/2023 &nbsp;·&nbsp; GPA: 3,91/4,0</span></div>
+                            <div data-i18n="edu_mba_title" style="font-weight: 600; color: var(--text-bright);">Master of Business Administration (MBA) – Finance</div>
+                            <div style="font-size: 0.85rem; color: var(--teal);">Fort Hays State University, Hays, Kansas &nbsp;·&nbsp; <span data-i18n="edu_mba_period" style="color: var(--gold);">08/2021 – 05/2023 &nbsp;·&nbsp; GPA: 3,91/4,0</span></div>
                         </div>
                     </div>
                     <div class="card" style="display: grid; grid-template-columns: auto 1fr; gap: 1.25rem; align-items: center; padding: 1.5rem;">
                         <div style="width: 48px; height: 48px; border-radius: 10px; background: rgba(200,169,110,0.1); border: 1px solid rgba(200,169,110,0.3); display:flex; align-items:center; justify-content:center; font-size: 1.4rem;">🎓</div>
                         <div>
-                            <div style="font-weight: 600; color: var(--text-bright);">Bachelor of Business Administration (BBA) – Finance</div>
-                            <div style="font-size: 0.85rem; color: var(--teal);">McPherson College, McPherson, Kansas &nbsp;·&nbsp; <span style="color: var(--gold);">08/2017 – 05/2021 &nbsp;·&nbsp; GPA: 3,87/4,0</span></div>
+                            <div data-i18n="edu_bba_title" style="font-weight: 600; color: var(--text-bright);">Bachelor of Business Administration (BBA) – Finance</div>
+                            <div style="font-size: 0.85rem; color: var(--teal);">McPherson College, McPherson, Kansas &nbsp;·&nbsp; <span data-i18n="edu_bba_period" style="color: var(--gold);">08/2017 – 05/2021 &nbsp;·&nbsp; GPA: 3,87/4,0</span></div>
                         </div>
                     </div>
                 </div>
@@ -1165,8 +1196,8 @@
     <section id="projects">
         <div class="section-wrap">
             <div class="reveal">
-                <p class="section-label">Projekte</p>
-                <h2 class="section-title">Ausgewählte <em>Arbeiten</em></h2>
+                <p class="section-label" data-i18n="proj_label">Projekte</p>
+                <h2 class="section-title" data-i18n="proj_title">Ausgewählte <em>Arbeiten</em></h2>
                 <div class="divider"></div>
             </div>
 
@@ -1261,12 +1292,12 @@
 
             <!-- Professional Work -->
             <div class="reveal" style="margin-top: 4rem;">
-                <p class="section-label" style="margin-bottom: 1.5rem;">Berufliche Projekterfahrung</p>
+                <p class="section-label" data-i18n="pro_label" style="margin-bottom: 1.5rem;">Berufliche Projekterfahrung</p>
                 <div class="pro-grid">
                     <div class="pro-card">
                         <div class="pro-card-icon">🧪</div>
-                        <h3>Finanzsektor A/B-Testing</h3>
-                        <p>Konzeption und Implementierung eines umfassenden A/B-Testing-Frameworks für Fortune-500-Kunden – inklusive statistischer Analyse und Audience Sizing.</p>
+                        <h3 data-i18n="pro_ab_title">Finanzsektor A/B-Testing</h3>
+                        <p data-i18n="pro_ab_desc">Konzeption und Implementierung eines umfassenden A/B-Testing-Frameworks für Fortune-500-Kunden – inklusive statistischer Analyse und Audience Sizing.</p>
                         <div class="tag-group" style="margin-top: 0.75rem;">
                             <span class="tag tag-teal" style="font-size:0.72rem;">Python</span>
                             <span class="tag tag-teal" style="font-size:0.72rem;">SQL</span>
@@ -1275,8 +1306,8 @@
                     </div>
                     <div class="pro-card">
                         <div class="pro-card-icon">🤖</div>
-                        <h3>KI-Suchassistent</h3>
-                        <p>Entwicklung eines skalierbaren KI-Suchassistenten mit Streamlit und Snowflake für interne Wissensdatenbanken und Pre-Sales-Demonstrationen.</p>
+                        <h3 data-i18n="pro_ai_title">KI-Suchassistent</h3>
+                        <p data-i18n="pro_ai_desc">Entwicklung eines skalierbaren KI-Suchassistenten mit Streamlit und Snowflake für interne Wissensdatenbanken und Pre-Sales-Demonstrationen.</p>
                         <div class="tag-group" style="margin-top: 0.75rem;">
                             <span class="tag tag-gold" style="font-size:0.72rem;">Streamlit</span>
                             <span class="tag tag-gold" style="font-size:0.72rem;">Snowflake</span>
@@ -1285,8 +1316,8 @@
                     </div>
                     <div class="pro-card">
                         <div class="pro-card-icon">📊</div>
-                        <h3>Interaktive Dashboards</h3>
-                        <p>Konzeption und Pflege von Tableau- und Qlik-Dashboards, die Business Intelligence und Entscheidungsfindung für Finanzsektor-Kunden verbessern.</p>
+                        <h3 data-i18n="pro_dash_title">Interaktive Dashboards</h3>
+                        <p data-i18n="pro_dash_desc">Konzeption und Pflege von Tableau- und Qlik-Dashboards, die Business Intelligence und Entscheidungsfindung für Finanzsektor-Kunden verbessern.</p>
                         <div class="tag-group" style="margin-top: 0.75rem;">
                             <span class="tag" style="font-size:0.72rem;">Tableau</span>
                             <span class="tag" style="font-size:0.72rem;">Qlik</span>
@@ -1295,8 +1326,8 @@
                     </div>
                     <div class="pro-card">
                         <div class="pro-card-icon">🔍</div>
-                        <h3>Clickstream Analytics</h3>
-                        <p>Tiefgreifende EDA mit Python-Notebooks und SQL-Datenbanken, Nutzung von Clickstream-Daten zur Trendidentifikation und Hypothesenentwicklung.</p>
+                        <h3 data-i18n="pro_click_title">Clickstream Analytics</h3>
+                        <p data-i18n="pro_click_desc">Tiefgreifende EDA mit Python-Notebooks und SQL-Datenbanken, Nutzung von Clickstream-Daten zur Trendidentifikation und Hypothesenentwicklung.</p>
                         <div class="tag-group" style="margin-top: 0.75rem;">
                             <span class="tag" style="font-size:0.72rem;">Python</span>
                             <span class="tag" style="font-size:0.72rem;">BigQuery</span>
@@ -1312,10 +1343,10 @@
     <section id="soccer" style="background: rgba(255,255,255,0.015); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
         <div class="section-wrap">
             <div class="reveal">
-                <p class="section-label">Die andere Leidenschaft</p>
-                <h2 class="section-title">Fußball als <em>Lebensschule</em></h2>
+                <p class="section-label" data-i18n="soccer_label">Die andere Leidenschaft</p>
+                <h2 class="section-title" data-i18n="soccer_title">Fußball als <em>Lebensschule</em></h2>
                 <div class="divider"></div>
-                <p style="max-width: 620px; color: var(--text-main); line-height: 1.8; margin-bottom: 3rem;">
+                <p style="max-width: 620px; color: var(--text-main); line-height: 1.8; margin-bottom: 3rem;" data-i18n="soccer_desc">
                     Fußball hat mich gelehrt, was keine Universität vermitteln kann: Führung unter Druck, 
                     kollektive Strategie, Rückschläge als Daten für Verbesserung. Als Teamkapitän und All-American war 
                     das Nationale Finale 2021 der Höhepunkt – heute coache ich die nächste Generation.
@@ -1351,8 +1382,8 @@
     <section id="contact">
         <div class="section-wrap">
             <div class="reveal">
-                <p class="section-label">Kontakt</p>
-                <h2 class="section-title">Lass uns <em>sprechen</em></h2>
+                <p class="section-label" data-i18n="contact_label">Kontakt</p>
+                <h2 class="section-title" data-i18n="contact_title">Lass uns <em>sprechen</em></h2>
                 <div class="divider"></div>
             </div>
             <div class="contact-wrap reveal">
@@ -1438,6 +1469,7 @@
         </div>
     </div>
 
+    <!-- ───── ALL SCRIPTS ───── -->
     <script>
         // ── COOKIE BANNER ──
         (function() {
@@ -1453,10 +1485,259 @@
             document.getElementById('cookieAccept').addEventListener('click', dismiss);
             document.getElementById('cookieDecline').addEventListener('click', dismiss);
         })();
-    </script>
 
-    <script>
-        // ── NAV SCROLL ──
+        // ── TRANSLATIONS ──
+        const translations = {
+            de: {
+                nav_home:       'Start',
+                nav_about:      'Über mich',
+                nav_experience: 'Erfahrung',
+                nav_projects:   'Projekte',
+                nav_soccer:     'Fußball',
+                nav_contact:    'Kontakt',
+                hero_label:     'Business Data Analyst · Bremen, Deutschland',
+                hero_role:      'Data Analytics & Decision Science · IT-Consultant & Web Developer',
+                hero_desc:      'Deutsch-amerikanischer Data Analyst mit Erfahrung in Fortune-500-Projekten, A/B-Testing, KI-Initiativen und Web-Development. Ehemaliger College-Fußballkapitän, der analytisches Denken vom Spielfeld in die Datenwelt mitgebracht hat.',
+                cv_en:          'Lebenslauf anfordern (EN)',
+                cv_de:          'Lebenslauf anfordern (DE)',
+                hero_contact:   'Kontakt aufnehmen',
+                scroll_hint:    'Scrollen',
+                about_label:        'Über mich',
+                about_title:        'Vom Spielfeld <em>zum Datenpipeline</em>',
+                about_journey_title:'Mein Weg',
+                about_journey_p1:   'Hallo! Ich bin Navid – in Bremen aufgewachsen, 2017 mit einem Fußball und großen Plänen in die USA ausgewandert. Als Collegespieler wurde ich Teamkapitän und All-American-Auszeichnung, ehe wir das Nationalfinale erreichten. Heute verbinde ich diese Disziplin mit meiner Leidenschaft für Daten.',
+                about_journey_p2:   'Nach meinem BBA und MBA in Finance habe ich über zwei Jahre als Business Data Analyst bei Concord USA Fortune-500-Kunden im Finanzsektor betreut – mit Schwerpunkten auf A/B-Testing, EDA und KI-Lösungen. Seit Oktober 2025 führe ich mein eigenes Unternehmen, <strong style="color:var(--teal)">Crossroads Analytics</strong>, in Bremen – als IT-Consultant & Web Developer tätig für Kunden aus verschiedenen Branchen.',
+                about_skills_title: 'Technisches Profil',
+                skill_analytics:    'Analytics & Data Science',
+                skill_viz:          'Visualisierung & BI',
+                skill_cloud:        'Cloud & Data Engineering',
+                exp_label:      'Berufserfahrung & Ausbildung',
+                exp_title:      'Meine <em>Karriere</em>',
+                proj_label:     'Projekte',
+                proj_title:     'Ausgewählte <em>Arbeiten</em>',
+                soccer_label:   'Die andere Leidenschaft',
+                soccer_title:   'Fußball als <em>Lebensschule</em>',
+                soccer_desc:    'Fußball hat mich gelehrt, was keine Universität vermitteln kann: Führung unter Druck, kollektive Strategie, Rückschläge als Daten für Verbesserung. Als Teamkapitän und All-American war das Nationale Finale 2021 der Höhepunkt – heute coache ich die nächste Generation.',
+                contact_label:  'Kontakt',
+                contact_title:  'Lass uns <em>sprechen</em>',
+                contact_desc:   'Ich bin offen für neue Möglichkeiten, interessante Projekte oder einfach ein Gespräch über Daten, Technologie oder Fußball. Meld dich gerne!',
+                contact_copy:   '✉ E-Mail kopieren',
+                toast_copied:   'E-Mail kopiert!',
+                footer_text:    '© 2025 <span>Navid Istanbullu</span> · Alle Rechte vorbehalten · Bremen, Deutschland',
+                cookie_title:   'Hinweis zu Cookies',
+                cookie_text:    'Diese Website verwendet derzeit <strong style="color:var(--text-main)">keine Tracking-Cookies</strong> und gibt keine Daten an Dritte weiter. Es werden ausschließlich technisch notwendige Einstellungen im Browser gespeichert (z.\u00a0B. diese Cookie-Zustimmung).',
+                cookie_accept:  'Verstanden',
+                cookie_decline: 'Schließen',
+                hobby_1: '⚽ Fußball spielen',
+                hobby_2: '🏃 Coaching',
+                hobby_3: '💪 Krafttraining',
+                hobby_4: '📊 Personal Optimization',
+                hobby_5: '🎯 Continuous Learning',
+                // Timeline
+                exp_crossroads_period:      '10/2025 – heute',
+                exp_crossroads_role:        'Gründer · IT-Consultant &amp; Web Developer',
+                exp_crossroads_li1:         'Gründung und Aufbau des eigenen IT- und Analytics-Unternehmens in Bremen',
+                exp_crossroads_li2:         'Planung und Umsetzung von Webseiten für Kunden aus verschiedenen Branchen',
+                exp_crossroads_li3:         'Entwicklung responsiver Webseiten mit modernen Web-Technologien',
+                exp_crossroads_li4:         'Selbstständige Projektsteuerung inkl. Kundenkommunikation und Anforderungsanalyse',
+                exp_concord_role:           'Business Data Analyst, Decision Science (40 Std./Woche)',
+                exp_concord_li1:            'Durchführung und Überwachung von A/B-Tests sowie Zielgruppenanalysen zur Unterstützung datenbasierter Entscheidungen',
+                exp_concord_li2:            'Aufbau starker Kundenbeziehungen als vertrauenswürdiger analytischer Partner; aktiver Beitrag zur Projektverlängerung durch konsistente Wertschöpfung',
+                exp_concord_li3:            'Explorative Datenanalysen (EDA) in Python zur Identifizierung von Trends, Anomalien und Hypothesenformulierung',
+                exp_concord_li4:            'Data Engineering: Entwicklung neuer Metriken aus SQL-Datenbanken und Clickstream-Analyse',
+                exp_concord_li5:            'Erstellung von Berichten und Erkenntnissen in Adobe Analytics auf Basis von Webanalysedaten',
+                exp_concord_li6:            'Gestaltung und Aktualisierung von Tableau- und Qlik-Dashboards',
+                exp_concord_li7:            'Mitentwicklung eines KI-Suchassistenten (Streamlit + Snowflake) für interne Wissensdatenbanken, eingesetzt als Pre-Sales-Lösung',
+                exp_finance_company:        'Finance Consultant (Freelancer)',
+                exp_finance_role:           'Berater für Kleinunternehmen im Bereich Finanzen',
+                exp_finance_li1:            'Analyse und Bewertung der Gesamtleistung von Kleinunternehmen (Finanzen, Rentabilität, Effizienz, Marketing)',
+                exp_finance_li2:            'Erstellung datenbasierter Berichte mit konkreten Lösungen zur Verbesserung von Nachhaltigkeit und Kundenzufriedenheit',
+                exp_finance_li3:            'Einrichtung geeigneter Buchhaltungssysteme zur Erhöhung der Effizienz in der Finanzberichterstattung',
+                exp_fhsu_role:              'Co-Trainer Herrenfußball (40 Std./Woche)',
+                exp_fhsu_li1:               'Leitung eines NCAA Division 2 Top-10-Herrenfußballprogramms',
+                exp_fhsu_li2:               'Erziehung messbarer Fortschritte durch systematische Leistungsanalyse mit Fokus auf individuelle und kollektive Weiterentwicklung',
+                exp_fhsu_li3:               'Analyse gegnerischer Teams und Entwicklung taktischer Spielpläne',
+                exp_rheinmetall_role:       'Praktikant – Commercial and Contracts',
+                exp_rheinmetall_li1:        'Prüfung, Bearbeitung und Verwaltung von Dienstleistungsverträgen',
+                exp_rheinmetall_li2:        'Bewertung von Kundenanfragen hinsichtlich kommerzieller und steuerrechtlicher Umsetzbarkeit',
+                exp_rheinmetall_li3:        'Erstellung von Berichten für EU-Förderanträge',
+                exp_heimstiftung_role:      'Praktikant – Marketing',
+                exp_heimstiftung_li1:       'Eigenständige Datenanalysen zur Verbesserung der Gewinnung und Bindung von Pflegeschüler:innen',
+                exp_heimstiftung_li2:       'Primär- und Sekundärforschung zur Ableitung geeigneter Maßnahmen',
+                // Education
+                edu_label:      'Bildungsweg',
+                edu_title:      'Akademische Ausbildung',
+                edu_msc_title:  'Master of Science – Computer Science (Schwerpunkt: Artificial Intelligence)',
+                edu_msc_period: '06/2024 – 09/2025 (pausiert)',
+                edu_mba_title:  'Master of Business Administration (MBA) – Finance',
+                edu_mba_period: '08/2021 – 05/2023 &nbsp;·&nbsp; GPA: 3,91/4,0',
+                edu_bba_title:  'Bachelor of Business Administration (BBA) – Finance',
+                edu_bba_period: '08/2017 – 05/2021 &nbsp;·&nbsp; GPA: 3,87/4,0',
+                // Professional work cards
+                pro_label:       'Berufliche Projekterfahrung',
+                pro_ab_title:    'Finanzsektor A/B-Testing',
+                pro_ab_desc:     'Konzeption und Implementierung eines umfassenden A/B-Testing-Frameworks für Fortune-500-Kunden – inklusive statistischer Analyse und Audience Sizing.',
+                pro_ai_title:    'KI-Suchassistent',
+                pro_ai_desc:     'Entwicklung eines skalierbaren KI-Suchassistenten mit Streamlit und Snowflake für interne Wissensdatenbanken und Pre-Sales-Demonstrationen.',
+                pro_dash_title:  'Interaktive Dashboards',
+                pro_dash_desc:   'Konzeption und Pflege von Tableau- und Qlik-Dashboards, die Business Intelligence und Entscheidungsfindung für Finanzsektor-Kunden verbessern.',
+                pro_click_title: 'Clickstream Analytics',
+                pro_click_desc:  'Tiefgreifende EDA mit Python-Notebooks und SQL-Datenbanken, Nutzung von Clickstream-Daten zur Trendidentifikation und Hypothesenentwicklung.',
+            },
+            en: {
+                nav_home:       'Home',
+                nav_about:      'About',
+                nav_experience: 'Experience',
+                nav_projects:   'Projects',
+                nav_soccer:     'Soccer',
+                nav_contact:    'Contact',
+                hero_label:     'Business Data Analyst · Bremen, Germany',
+                hero_role:      'Data Analytics & Decision Science · IT-Consultant & Web Developer',
+                hero_desc:      'German-American data analyst with experience in Fortune 500 projects, A/B testing, AI initiatives, and web development. Former college soccer captain who brought analytical thinking from the pitch to the world of data.',
+                cv_en:          'Request CV (EN)',
+                cv_de:          'Lebenslauf anfordern (DE)',
+                hero_contact:   'Get in touch',
+                scroll_hint:    'Scroll',
+                about_label:        'About me',
+                about_title:        'From the pitch <em>to the data pipeline</em>',
+                about_journey_title:'My Journey',
+                about_journey_p1:   'Hey! I\'m Navid – grew up in Bremen, moved to the US in 2017 with a soccer ball and big ambitions. As a college player I became team captain and earned All-American honors before reaching the national final. Today I combine that discipline with my passion for data.',
+                about_journey_p2:   'After my BBA and MBA in Finance I spent over two years as a Business Data Analyst at Concord USA, serving Fortune 500 clients in the financial sector with a focus on A/B testing, EDA, and AI solutions. Since October 2025 I run my own company, <strong style="color:var(--teal)">Crossroads Analytics</strong>, in Bremen – working as an IT-Consultant & Web Developer for clients across various industries.',
+                about_skills_title: 'Technical Profile',
+                skill_analytics:    'Analytics & Data Science',
+                skill_viz:          'Visualization & BI',
+                skill_cloud:        'Cloud & Data Engineering',
+                exp_label:      'Experience & Education',
+                exp_title:      'My <em>Career</em>',
+                proj_label:     'Projects',
+                proj_title:     'Selected <em>Work</em>',
+                soccer_label:   'The other passion',
+                soccer_title:   'Soccer as <em>a school of life</em>',
+                soccer_desc:    'Soccer taught me what no university can: leadership under pressure, collective strategy, setbacks as data for improvement. As team captain and All-American, the 2021 national final was the highlight – today I coach the next generation.',
+                contact_label:  'Contact',
+                contact_title:  'Let\'s <em>talk</em>',
+                contact_desc:   'I\'m open to new opportunities, interesting projects, or simply a conversation about data, technology, or soccer. Feel free to reach out!',
+                contact_copy:   '✉ Copy Email',
+                toast_copied:   'Email copied!',
+                footer_text:    '© 2025 <span>Navid Istanbullu</span> · All rights reserved · Bremen, Germany',
+                cookie_title:   'Cookie Notice',
+                cookie_text:    'This website currently uses <strong style="color:var(--text-main)">no tracking cookies</strong> and does not share any data with third parties. Only technically necessary settings are stored in your browser (e.g. this cookie consent).',
+                cookie_accept:  'Got it',
+                cookie_decline: 'Close',
+                hobby_1: '⚽ Playing Soccer',
+                hobby_2: '🏃 Coaching',
+                hobby_3: '💪 Strength Training',
+                hobby_4: '📊 Personal Optimization',
+                hobby_5: '🎯 Continuous Learning',
+                // Timeline
+                exp_crossroads_period:      '10/2025 – present',
+                exp_crossroads_role:        'Founder · IT-Consultant &amp; Web Developer',
+                exp_crossroads_li1:         'Founded and built my own IT and analytics company in Bremen',
+                exp_crossroads_li2:         'Planning and delivery of websites for clients across various industries',
+                exp_crossroads_li3:         'Development of responsive websites using modern web technologies',
+                exp_crossroads_li4:         'Independent project management including client communication and requirements analysis',
+                exp_concord_role:           'Business Data Analyst, Decision Science (40 hrs/week)',
+                exp_concord_li1:            'Executing and monitoring A/B tests and audience analyses to support data-driven decisions',
+                exp_concord_li2:            'Building strong client relationships as a trusted analytical partner; actively contributing to project renewals through consistent value delivery',
+                exp_concord_li3:            'Exploratory data analyses (EDA) in Python to identify trends, anomalies, and formulate hypotheses',
+                exp_concord_li4:            'Data engineering: developing new metrics from SQL databases and clickstream analysis',
+                exp_concord_li5:            'Creating reports and insights in Adobe Analytics based on web analytics data',
+                exp_concord_li6:            'Designing and maintaining Tableau and Qlik dashboards',
+                exp_concord_li7:            'Co-developing an AI search assistant (Streamlit + Snowflake) for internal knowledge bases, deployed as a pre-sales solution',
+                exp_finance_company:        'Finance Consultant (Freelancer)',
+                exp_finance_role:           'Small Business Finance Consultant',
+                exp_finance_li1:            'Analysis and evaluation of overall small business performance (finance, profitability, efficiency, marketing)',
+                exp_finance_li2:            'Creating data-driven reports with concrete solutions to improve sustainability and customer satisfaction',
+                exp_finance_li3:            'Setting up appropriate accounting systems to increase efficiency in financial reporting',
+                exp_fhsu_role:              'Men\'s Soccer Assistant Coach (40 hrs/week)',
+                exp_fhsu_li1:               'Leading an NCAA Division 2 Top-10 men\'s soccer program',
+                exp_fhsu_li2:               'Driving measurable progress through systematic performance analysis focused on individual and collective development',
+                exp_fhsu_li3:               'Analysing opposing teams and developing tactical game plans',
+                exp_rheinmetall_role:       'Intern – Commercial and Contracts',
+                exp_rheinmetall_li1:        'Reviewing, processing, and managing service contracts',
+                exp_rheinmetall_li2:        'Evaluating customer inquiries regarding commercial and tax law feasibility',
+                exp_rheinmetall_li3:        'Preparing reports for EU funding applications',
+                exp_heimstiftung_role:      'Intern – Marketing',
+                exp_heimstiftung_li1:       'Independent data analyses to improve the recruitment and retention of nursing students',
+                exp_heimstiftung_li2:       'Primary and secondary research to derive appropriate measures',
+                // Education
+                edu_label:      'Education',
+                edu_title:      'Academic Background',
+                edu_msc_title:  'Master of Science – Computer Science (Focus: Artificial Intelligence)',
+                edu_msc_period: '06/2024 – 09/2025 (on hold)',
+                edu_mba_title:  'Master of Business Administration (MBA) – Finance',
+                edu_mba_period: '08/2021 – 05/2023 &nbsp;·&nbsp; GPA: 3.91/4.0',
+                edu_bba_title:  'Bachelor of Business Administration (BBA) – Finance',
+                edu_bba_period: '08/2017 – 05/2021 &nbsp;·&nbsp; GPA: 3.87/4.0',
+                // Professional work cards
+                pro_label:       'Professional Project Experience',
+                pro_ab_title:    'Financial Sector A/B Testing',
+                pro_ab_desc:     'Design and implementation of a comprehensive A/B testing framework for Fortune 500 clients – including statistical analysis and audience sizing.',
+                pro_ai_title:    'AI Search Assistant',
+                pro_ai_desc:     'Development of a scalable AI search assistant using Streamlit and Snowflake for internal knowledge bases and pre-sales demonstrations.',
+                pro_dash_title:  'Interactive Dashboards',
+                pro_dash_desc:   'Design and maintenance of Tableau and Qlik dashboards improving business intelligence and decision-making for financial sector clients.',
+                pro_click_title: 'Clickstream Analytics',
+                pro_click_desc:  'In-depth EDA using Python notebooks and SQL databases, leveraging clickstream data for trend identification and hypothesis development.',
+            }
+        };
+
+        // FIX: Removed duplicate `let currentLang` declaration — declare once here
+        let currentLang = localStorage.getItem('siteLang') || 'de';
+        window._toastMsg = translations[currentLang].toast_copied;
+
+        function setLang(lang) {
+            currentLang = lang;
+            localStorage.setItem('siteLang', lang);
+            document.documentElement.lang = lang;
+            const t = translations[lang];
+
+            document.getElementById('langDE').classList.toggle('active', lang === 'de');
+            document.getElementById('langEN').classList.toggle('active', lang === 'en');
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key] !== undefined) el.innerHTML = t[key];
+            });
+
+            document.querySelectorAll('.reveal').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight) el.classList.add('visible');
+            });
+
+            if (window._revealObserver) window._revealObserver.disconnect();
+            if (window.initObserver) window._revealObserver = window.initObserver();
+
+            if (window._reattachScroll) window._reattachScroll();
+
+            const contactP = document.querySelector('.contact-wrap > p');
+            if (contactP) contactP.innerHTML = t.contact_desc;
+
+            const copyBtn = document.getElementById('emailBtnContact');
+            if (copyBtn) copyBtn.innerHTML = t.contact_copy;
+
+            const footer = document.querySelector('footer p');
+            if (footer) footer.innerHTML = t.footer_text;
+
+            window._toastMsg = t.toast_copied;
+
+            const cookieParagraphs = document.querySelectorAll('#cookieBanner p');
+            if (cookieParagraphs[0]) cookieParagraphs[0].textContent = t.cookie_title;
+            if (cookieParagraphs[1]) cookieParagraphs[1].innerHTML  = t.cookie_text;
+            const acceptBtn  = document.getElementById('cookieAccept');
+            const declineBtn = document.getElementById('cookieDecline');
+            if (acceptBtn)  acceptBtn.textContent  = t.cookie_accept;
+            if (declineBtn) declineBtn.textContent = t.cookie_decline;
+
+            const hobbyGroup = document.querySelector('.card.card-gold .tag-group');
+            if (hobbyGroup) {
+                const hobbyTags = hobbyGroup.querySelectorAll('.tag');
+                const keys = ['hobby_1','hobby_2','hobby_3','hobby_4','hobby_5'];
+                hobbyTags.forEach((el, i) => { if (keys[i] && t[keys[i]]) el.textContent = t[keys[i]]; });
+            }
+        }
+
+        // ── NAVBAR SCROLL ──
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             navbar.classList.toggle('scrolled', window.scrollY > 80);
@@ -1494,10 +1775,14 @@
         });
 
         // ── REVEAL ON SCROLL ──
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        window.initObserver = function() {
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+            }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            return observer;
+        };
+        window._revealObserver = window.initObserver();
 
         // ── EMAIL COPY ──
         const EMAIL = 'navido972@gmail.com';
@@ -1511,6 +1796,7 @@
                 t.select(); document.execCommand('copy');
                 document.body.removeChild(t);
             });
+            toast.textContent = window._toastMsg || 'E-Mail kopiert!';
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 2800);
         }
@@ -1519,6 +1805,23 @@
             const el = document.getElementById(id);
             if (el) el.addEventListener('click', copyEmail);
         });
+
+        // ── SMOOTH SCROLL HELPER (reusable after lang swap) ──
+        window._reattachScroll = function() {
+            document.querySelectorAll('a[href^="#"]').forEach(a => {
+                a.addEventListener('click', e => {
+                    const target = document.querySelector(a.getAttribute('href'));
+                    if (target) {
+                        e.preventDefault();
+                        window.scrollTo({ top: target.offsetTop - 68, behavior: 'smooth' });
+                    }
+                });
+            });
+        };
+
+        // ── APPLY SAVED LANGUAGE ──
+        setLang(currentLang);
+
     </script>
 </body>
 </html>
