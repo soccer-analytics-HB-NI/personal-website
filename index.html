@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Navid Istanbullu – Portfolio</title>
+    <link rel="icon" type="image/png" href="NI_favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
@@ -91,6 +92,9 @@
 
         .nav-links {
             display: flex; list-style: none; gap: 2.5rem;
+            position: fixed; top: 0; right: 2.5rem;
+            height: 68px; align-items: center;
+            z-index: 100;
         }
         .nav-links a {
             color: var(--text-muted);
@@ -769,15 +773,19 @@
         }
         @media (max-width: 640px) {
             .nav-links {
-                position: fixed; inset: 0;
-                flex-direction: column; justify-content: center; align-items: center;
-                gap: 2.5rem;
-                background: rgba(7,9,15,0.98);
-                backdrop-filter: blur(24px);
-                right: -100%; opacity: 0;
-                transition: right 0.3s ease, opacity 0.3s;
+                position: fixed; top: 68px; left: 0; right: 0;
+                height: calc(100vh - 68px);
+                flex-direction: column; justify-content: flex-start; align-items: center;
+                padding-top: 3rem;
+                gap: 2rem;
+                background: #07090f;
+                opacity: 0;
+                pointer-events: none;
+                transform: translateX(100%);
+                transition: transform 0.3s ease, opacity 0.3s;
+                z-index: 99;
             }
-            .nav-links.open { right: 0; opacity: 1; }
+            .nav-links.open { transform: translateX(0); opacity: 1; pointer-events: auto; }
             .nav-links a { font-size: 1.1rem; }
             .mobile-menu-btn { display: flex; }
             .hero h1 { font-size: 2.4rem; }
@@ -802,7 +810,7 @@
 
     <!-- Navigation -->
     <nav id="navbar">
-        <div class="nav-logo">Navid <span>Istanbullu</span></div>
+        <div class="nav-logo" style="display:flex;align-items:center;gap:0.5rem;"><img src="NI_favicon.png" alt="NI" style="width:30px;height:30px;border-radius:50%;object-fit:cover;flex-shrink:0;">Navid <span>Istanbullu</span></div>
         <div style="display:flex; align-items:center; gap: 1.5rem;">
             <div class="lang-switch">
                 <button id="langDE" class="active" onclick="setLang('de')">DE</button>
@@ -812,15 +820,15 @@
                 <span></span><span></span><span></span>
             </div>
         </div>
-        <ul class="nav-links" id="navLinks">
-            <li><a href="#home" data-i18n="nav_home">Start</a></li>
-            <li><a href="#about" data-i18n="nav_about">Über mich</a></li>
-            <li><a href="#experience" data-i18n="nav_experience">Erfahrung</a></li>
-            <li><a href="#projects" data-i18n="nav_projects">Projekte</a></li>
-            <li><a href="#soccer" data-i18n="nav_soccer">Fußball</a></li>
-            <li><a href="#contact" data-i18n="nav_contact">Kontakt</a></li>
-        </ul>
     </nav>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="#home" data-i18n="nav_home">Start</a></li>
+        <li><a href="#about" data-i18n="nav_about">Über mich</a></li>
+        <li><a href="#experience" data-i18n="nav_experience">Erfahrung</a></li>
+        <li><a href="#projects" data-i18n="nav_projects">Projekte</a></li>
+        <li><a href="#soccer" data-i18n="nav_soccer">Fußball</a></li>
+        <li><a href="#contact" data-i18n="nav_contact">Kontakt</a></li>
+    </ul>
 
     <!-- ───── HERO ───── -->
     <section id="home" class="hero">
